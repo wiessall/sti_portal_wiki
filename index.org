@@ -1,3 +1,8 @@
+#+BEGIN_EXPORT html
+---
+layout: default
+---
+
 * Importing data in Drupal                                           :drupal:
 ** Content workflow; Imports
   - This commands lists all content types' machine names 
@@ -130,5 +135,5 @@ Array
       5. Structure -> Content types -> innovation -> create new fields
       6. Change ECA; add the new 
     
-tl
+#+END_EXPORT
     

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-10-07 Tue 10:14 -->
+<!-- 2025-10-07 Tue 11:41 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -231,41 +231,47 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf625d4c">1. Importing data in Drupal&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></a>
+<li><a href="#org4d3c062">1. Importing data in Drupal&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></a>
 <ul>
-<li><a href="#org524a247">1.1. Content workflow; Imports</a></li>
-<li><a href="#orgea90245">1.2. Importing data</a></li>
-<li><a href="#orgc76a295">1.3. Rolling back</a></li>
-<li><a href="#orga5ec0f9">1.4. From Original record to innovation</a></li>
-<li><a href="#org72d0305">1.5. Notes</a></li>
+<li><a href="#orgfa61b68">1.1. Content workflow; Imports</a></li>
+<li><a href="#org1b96aa5">1.2. Importing data</a></li>
+<li><a href="#org59c3d2b">1.3. Rolling back</a></li>
+<li><a href="#org3dec287">1.4. From Original record to innovation</a></li>
+<li><a href="#org95bbb18">1.5. Notes</a></li>
 </ul>
 </li>
-<li><a href="#orgc1af147">2. Error log: AI enhancement</a>
+<li><a href="#org2eda00c">2. Error log: AI enhancement</a>
 <ul>
-<li><a href="#org5a9e7c9">2.1. Data source not found in exception list</a></li>
-<li><a href="#org902f691">2.2. Cannot access offset of type string on string</a></li>
-<li><a href="#orgf165a14">2.3. OpenAI API doesn't handle strings</a></li>
-<li><a href="#orgbd4a14e">2.4. Examples of formatting errors when running a migration</a>
+<li><a href="#org49fcab3">2.1. Data source not found in exception list</a></li>
+<li><a href="#org631f34f">2.2. Cannot access offset of type string on string</a></li>
+<li><a href="#orgbf6a46b">2.3. OpenAI API doesn't handle strings</a></li>
+<li><a href="#org0ed2765">2.4. Examples of formatting errors when running a migration</a>
 <ul>
-<li><a href="#org3c2f1d6">2.4.1. Whitespaces and different languages</a></li>
+<li><a href="#org05206e2">2.4.1. Whitespaces and different languages</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org4030b8b">3. How to change taxonomy terms&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></a>
+<li><a href="#orgbd2fd13">3. How to change taxonomy terms&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></a>
 <ul>
-<li><a href="#org1952019">3.1. Custom Taxonomy</a></li>
+<li><a href="#orge409c4a">3.1. Custom Taxonomy</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf625d4c" class="outline-2">
-<h2 id="orgf625d4c"><span class="section-number-2">1.</span> Importing data in Drupal&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></h2>
+<p>
+#+BEGIN<sub>EXPORT</sub> html
+&#x2014;
+layout: default
+&#x2014;
+</p>
+<div id="outline-container-org4d3c062" class="outline-2">
+<h2 id="org4d3c062"><span class="section-number-2">1.</span> Importing data in Drupal&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org524a247" class="outline-3">
-<h3 id="org524a247"><span class="section-number-3">1.1.</span> Content workflow; Imports</h3>
+<div id="outline-container-orgfa61b68" class="outline-3">
+<h3 id="orgfa61b68"><span class="section-number-3">1.1.</span> Content workflow; Imports</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>This commands lists all content types' machine names</li>
@@ -309,8 +315,8 @@ Array
 </ul>
 </div>
 </div>
-<div id="outline-container-orgea90245" class="outline-3">
-<h3 id="orgea90245"><span class="section-number-3">1.2.</span> Importing data</h3>
+<div id="outline-container-org1b96aa5" class="outline-3">
+<h3 id="org1b96aa5"><span class="section-number-3">1.2.</span> Importing data</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>The general workflow from original record (<code>source_record</code>) to AI-extracted record (<code>extracted_entity</code>) and finally the innovation (<code>innovation</code>) you find on the user-facing website is:
@@ -322,8 +328,8 @@ Array
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc76a295" class="outline-3">
-<h3 id="orgc76a295"><span class="section-number-3">1.3.</span> Rolling back</h3>
+<div id="outline-container-org59c3d2b" class="outline-3">
+<h3 id="org59c3d2b"><span class="section-number-3">1.3.</span> Rolling back</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>This generally fails because of a malformatted migration file or typos etc in the source data, to rollback you do
@@ -345,8 +351,8 @@ Array
 </ul>
 </div>
 </div>
-<div id="outline-container-orga5ec0f9" class="outline-3">
-<h3 id="orga5ec0f9"><span class="section-number-3">1.4.</span> From Original record to innovation</h3>
+<div id="outline-container-org3dec287" class="outline-3">
+<h3 id="org3dec287"><span class="section-number-3">1.4.</span> From Original record to innovation</h3>
 <div class="outline-text-3" id="text-1-4">
 <ol class="org-ol">
 <li>Web menu -&gt; BACK-END -&gt; manage data sources
@@ -377,15 +383,15 @@ Array
 </ul></li>
 <li>Generate/update innovation records from AI extracted records
 <ul class="org-ul">
-<li>to see what can go wrong &amp; how to fix it: <a href="#orgc1af147">Error log: AI enhancement</a></li>
+<li>to see what can go wrong &amp; how to fix it: <a href="#org2eda00c">Error log: AI enhancement</a></li>
 </ul></li>
 <li>Check that the innovations are displayed correctly in the website if you open your data source's collection page</li>
 </ol></li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org72d0305" class="outline-3">
-<h3 id="org72d0305"><span class="section-number-3">1.5.</span> Notes</h3>
+<div id="outline-container-org95bbb18" class="outline-3">
+<h3 id="org95bbb18"><span class="section-number-3">1.5.</span> Notes</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>Make sure that there are no duplicates in the source data. This means whatever field is used as 'id' is truly unique. Good candidates are project numbers, urls or, if no alternative, the full title</li>
@@ -394,12 +400,12 @@ Array
 </div>
 </div>
 </div>
-<div id="outline-container-orgc1af147" class="outline-2">
-<h2 id="orgc1af147"><span class="section-number-2">2.</span> Error log: AI enhancement</h2>
+<div id="outline-container-org2eda00c" class="outline-2">
+<h2 id="org2eda00c"><span class="section-number-2">2.</span> Error log: AI enhancement</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org5a9e7c9" class="outline-3">
-<h3 id="org5a9e7c9"><span class="section-number-3">2.1.</span> Data source not found in exception list</h3>
+<div id="outline-container-org49fcab3" class="outline-3">
+<h3 id="org49fcab3"><span class="section-number-3">2.1.</span> Data source not found in exception list</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><p>
@@ -416,8 +422,8 @@ Error:
 </ul>
 </div>
 </div>
-<div id="outline-container-org902f691" class="outline-3">
-<h3 id="org902f691"><span class="section-number-3">2.2.</span> Cannot access offset of type string on string</h3>
+<div id="outline-container-org631f34f" class="outline-3">
+<h3 id="org631f34f"><span class="section-number-3">2.2.</span> Cannot access offset of type string on string</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li><p>
@@ -441,8 +447,8 @@ Solution: As a hotfix I forced casting every value that is not an array to an ar
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf165a14" class="outline-3">
-<h3 id="orgf165a14"><span class="section-number-3">2.3.</span> OpenAI API doesn't handle strings</h3>
+<div id="outline-container-orgbf6a46b" class="outline-3">
+<h3 id="orgbf6a46b"><span class="section-number-3">2.3.</span> OpenAI API doesn't handle strings</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li><p>
@@ -452,7 +458,7 @@ Error:
 <pre class="src src-nil">TypeError: OpenAI\Responses\Chat\CreateResponse::from(): Argument #1 ($attributes) must be of type array, string given, called in /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/src/Resources/Chat.php on line 35 in OpenAI\Responses\Chat\CreateResponse::from() (line 46 of /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/src/Responses/Chat/CreateResponse.php).
 </pre>
 </div></li>
-<li>Explanation: Like in <a href="#org902f691">this error</a> the ECA that does the AI-enrichment seems to pass a string where an array is expected</li>
+<li>Explanation: Like in <a href="#org631f34f">this error</a> the ECA that does the AI-enrichment seems to pass a string where an array is expected</li>
 <li>Solution:
 <ul class="org-ul">
 <li>Changing the php code and forcing strings to array could work</li>
@@ -462,12 +468,12 @@ Error:
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbd4a14e" class="outline-3">
-<h3 id="orgbd4a14e"><span class="section-number-3">2.4.</span> Examples of formatting errors when running a migration</h3>
+<div id="outline-container-org0ed2765" class="outline-3">
+<h3 id="org0ed2765"><span class="section-number-3">2.4.</span> Examples of formatting errors when running a migration</h3>
 <div class="outline-text-3" id="text-2-4">
 </div>
-<div id="outline-container-org3c2f1d6" class="outline-4">
-<h4 id="org3c2f1d6"><span class="section-number-4">2.4.1.</span> Whitespaces and different languages</h4>
+<div id="outline-container-org05206e2" class="outline-4">
+<h4 id="org05206e2"><span class="section-number-4">2.4.1.</span> Whitespaces and different languages</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <ul class="org-ul">
 <li><p>
@@ -491,15 +497,15 @@ Error:
 </div>
 </div>
 </div>
-<div id="outline-container-org4030b8b" class="outline-2">
-<h2 id="org4030b8b"><span class="section-number-2">3.</span> How to change taxonomy terms&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></h2>
+<div id="outline-container-orgbd2fd13" class="outline-2">
+<h2 id="orgbd2fd13"><span class="section-number-2">3.</span> How to change taxonomy terms&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Web menu -&gt; Structure -&gt; Taxonomy -&gt; &lt;AFS innovation use cases&gt;</li>
 </ul>
 </div>
-<div id="outline-container-org1952019" class="outline-3">
-<h3 id="org1952019"><span class="section-number-3">3.1.</span> Custom Taxonomy</h3>
+<div id="outline-container-orge409c4a" class="outline-3">
+<h3 id="orge409c4a"><span class="section-number-3">3.1.</span> Custom Taxonomy</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Structure -&gt; Taxonomy -&gt; Create vocabulary</li>
@@ -518,14 +524,14 @@ Error:
 </ul>
 
 <p>
-tl
+#+END<sub>EXPORT</sub>
 </p>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2025-10-07 Tue 10:14</p>
+<p class="date">Created: 2025-10-07 Tue 11:41</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
