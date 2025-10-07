@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-10-07 Tue 10:14 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="content" class="content">
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgf625d4c">1. Importing data in Drupal&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></a>
+<ul>
+<li><a href="#org524a247">1.1. Content workflow; Imports</a></li>
+<li><a href="#orgea90245">1.2. Importing data</a></li>
+<li><a href="#orgc76a295">1.3. Rolling back</a></li>
+<li><a href="#orga5ec0f9">1.4. From Original record to innovation</a></li>
+<li><a href="#org72d0305">1.5. Notes</a></li>
+</ul>
+</li>
+<li><a href="#orgc1af147">2. Error log: AI enhancement</a>
+<ul>
+<li><a href="#org5a9e7c9">2.1. Data source not found in exception list</a></li>
+<li><a href="#org902f691">2.2. Cannot access offset of type string on string</a></li>
+<li><a href="#orgf165a14">2.3. OpenAI API doesn't handle strings</a></li>
+<li><a href="#orgbd4a14e">2.4. Examples of formatting errors when running a migration</a>
+<ul>
+<li><a href="#org3c2f1d6">2.4.1. Whitespaces and different languages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org4030b8b">3. How to change taxonomy terms&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></a>
+<ul>
+<li><a href="#org1952019">3.1. Custom Taxonomy</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf625d4c" class="outline-2">
+<h2 id="orgf625d4c"><span class="section-number-2">1.</span> Importing data in Drupal&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org524a247" class="outline-3">
+<h3 id="org524a247"><span class="section-number-3">1.1.</span> Content workflow; Imports</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>This commands lists all content types' machine names</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-nil">  drush eval "print_r(array_keys(\Drupal::entityTypeManager()-&gt;getStorage('node_type')-&gt;loadMultiple()));"
+
+Array
+(
+    [0] =&gt; asti_data
+    [1] =&gt; definitions
+    [2] =&gt; digital_asset
+    [3] =&gt; extracted_entity
+    [4] =&gt; initiative
+    [5] =&gt; innovation
+    [6] =&gt; innovation_core
+    [7] =&gt; innovation_extracted_from_origin
+    [8] =&gt; internal_content
+    [9] =&gt; learning_resource
+    [10] =&gt; organization
+    [11] =&gt; source_record
+    [12] =&gt; taxonomy_description
+    [13] =&gt; web_page
+    [14] =&gt; website_section
+)
+</pre>
+</div>
+<ul class="org-ul">
+<li>To find out which fields are available for each content type, run</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-nil">drush field:info node &lt;e.g. source_record&gt;
+</pre>
+</div>
+<ul class="org-ul">
+<li>This will give you an idea which information should ideally already be present when importing the data</li>
+<li>To understand what those fields are supposed to contain, you can consult the taxonomy page (Web menu -&gt; About -&gt; Taxonomies -&gt; &lt;e.g. Use Cases&gt;
+<ul class="org-ul">
+<li>This will help you understand if the data source of choice has a matching taxonomy</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgea90245" class="outline-3">
+<h3 id="orgea90245"><span class="section-number-3">1.2.</span> Importing data</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>The general workflow from original record (<code>source_record</code>) to AI-extracted record (<code>extracted_entity</code>) and finally the innovation (<code>innovation</code>) you find on the user-facing website is:
+<ol class="org-ol">
+<li>write migration.yml file</li>
+<li>upload source file (json, csv, &#x2026;) to <code>web/modules/custom/&lt;your_module_name&gt;/source/&lt;your_source_name_as_in_yml&gt;</code>)</li>
+<li><code>drush migrate:import &lt;your migration id&gt;</code></li>
+</ol></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgc76a295" class="outline-3">
+<h3 id="orgc76a295"><span class="section-number-3">1.3.</span> Rolling back</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
+<li>This generally fails because of a malformatted migration file or typos etc in the source data, to rollback you do
+<ol class="org-ol">
+<li><code>drush migrate:stop &lt;your migration id&gt;</code> to stop any migration process going on</li>
+<li><code>drush migrate:reset &lt;your migration id&gt;</code> to set the migration status to 'idle' (i.e. ready to import)</li>
+<li><code>drush migrate:rollback &lt;your migration id&gt;</code> to remove any partially imported records</li>
+</ol></li>
+<li>Some notes on rollback: If you already have downstream content types based off of earlier imported source records, you're prone to create duplicates when rolling back &amp; re-importing the same sources. Your options are then:
+<ol class="org-ol">
+<li><code>drush migrate:rollback &lt;your migration id&gt; --update</code> to only update <code>source_record</code> that changed in the source data (because you e.g. changed the json structure)</li>
+<li>Purge all downstream content by going to (Web menu -&gt; BACK-END -&gt; Manage &lt;content type&gt;)
+<ol class="org-ol">
+<li>Once there, filter for all content of interest, select the action 'Delete' from the Action drop-down and execute</li>
+<li>You might need to do this 3 times, for 'Original Record', 'AI-extracted innovation record' and 'Innovation'</li>
+<li>After purging existing data, you can run <code>drush migrate:import &lt;your migration id&gt;</code> again</li>
+</ol></li>
+</ol></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orga5ec0f9" class="outline-3">
+<h3 id="orga5ec0f9"><span class="section-number-3">1.4.</span> From Original record to innovation</h3>
+<div class="outline-text-3" id="text-1-4">
+<ol class="org-ol">
+<li>Web menu -&gt; BACK-END -&gt; manage data sources
+<ul class="org-ul">
+<li>Search: &lt;your data source&gt;</li>
+<li>Edit tag: STI portal data source (also ATIO, should the data be imported into ATIO)</li>
+<li>Publish (I encountered problems with the AI-enhancement if I didn't do this)</li>
+<li>select if
+<ul class="org-ul">
+<li>can be overwritten by AI</li>
+<li>allow overwriting by original record</li>
+<li>allow overwriting by extracted innovation record</li>
+</ul></li>
+</ul></li>
+<li>Web menu -&gt; BACK-END -&gt; Workflows for original records 
+<ul class="org-ul">
+<li>Source: &lt;your data source&gt; (should auto-complete at this point)</li>
+<li>filter</li>
+<li>select all</li>
+<li>generate/update extracted innovations from original records</li>
+</ul></li>
+<li>Web menu -&gt; BACK-END -&gt; Workflows for ai-extracted innovations
+<ol class="org-ol">
+<li>Enrich derived innovation record with AI if empty (settings allow a bit less cautious)
+<ul class="org-ul">
+<li>max 250, better 50 at a time (otherwise you risk a timeout error)</li>
+<li>if not loading, change the 'start' in the url for 'stop': <code>https://sti-portal-prototype.net/stiportal_dev/web/batch?id=3342&amp;op=start</code> -&gt; <code>https://sti-portal-prototype.net/stiportal_dev/web/batch?id=3342&amp;op=stop</code></li>
+</ul></li>
+<li>Generate/update innovation records from AI extracted records
+<ul class="org-ul">
+<li>to see what can go wrong &amp; how to fix it: <a href="#orgc1af147">Error log: AI enhancement</a></li>
+</ul></li>
+<li>Check that the innovations are displayed correctly in the website if you open your data source's collection page</li>
+</ol></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org72d0305" class="outline-3">
+<h3 id="org72d0305"><span class="section-number-3">1.5.</span> Notes</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li>Make sure that there are no duplicates in the source data. This means whatever field is used as 'id' is truly unique. Good candidates are project numbers, urls or, if no alternative, the full title</li>
+<li>'Titles' have a character limit</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc1af147" class="outline-2">
+<h2 id="orgc1af147"><span class="section-number-2">2.</span> Error log: AI enhancement</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org5a9e7c9" class="outline-3">
+<h3 id="org5a9e7c9"><span class="section-number-3">2.1.</span> Data source not found in exception list</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li><p>
+Error:
+</p>
+<div class="org-src-container">
+<pre class="src src-nil">Check action successor current_prov_id (Activity_12o35fp) from ECA VBO - Generate / update AI derived innovation records from original records (process_yoqnpd7) for event eca_vbo.execute. - session_user (Entity user/46/wiessalla) - entity (Entity node/source_record/35689/ Corte (Poda) das folhas do coqueiro na região de Bicol) - node (Entity node/source_record/35689/ Corte (Poda) das folhas do coqueiro na região de Bicol) - except_providers_view (DTO) - 0 (Entity node/digital_asset/28182/Country Annual Report (CAR)) - 1 (Entity node/digital_asset/28184/Digital Agriculture Programme Priority Area (BP5) ) - 2 (Entity node/digital_asset/25260/Seeding The Future Global Food System Innovation Database and Network) - 3 (Entity node/digital_asset/19987/Technologies for African Agricultural Transformation (TAAT)) - 4 (Entity node/digital_asset/20007/World Overview of Conservation Approaches and Technologies (WOCAT)) - exception_provider (DTO "0") - exceptions_count (DTO "0") - provider_id_read (DTO "28182") - provider_id (DTO "28182") - exception_providers_list (DTO) - 0 (DTO "20007") - 1 (DTO "19987") - 2 (DTO "25260") - 3 (DTO "28184") - 4 (DTO "28182") - orig_rec (Entity node/source_record/35689/ Corte (Poda) das folhas do coqueiro na região de Bicol) - rec_sources (DTO) - 0 (Entity node/digital_asset/4/FAO Technologies and Practices for Small Agricultural Producers (TECA)) - counter (DTO "-17243") - current_prov_id (NULL) - user (Entity user/1/admin) - event (DTO) - view (DTO) - id (string "backend2") - display_id (string "page_7") - action (DTO) - plugin (string "eca_vbo_execute:generate_update_extracted_innovations_from_original_records") - config (DTO) - operation_name (string "Generate / update extracted innovations from original records") - message_override (string "") - skip_confirm (integer "0") - entity (DTO) - id (string "35689") - label (string " Corte (Poda) das folhas do coqueiro na região de Bicol") - type (string "node") - bundle (string "source_record") - langcode (string "en") - machine_name (string "eca_vbo.execute")
+</pre>
+</div>
+<ul class="org-ul">
+<li>Explanation: In the example I was trying to add new AI-extracted innovations to the provider 'TECA' with the <code>provider_id</code> 4. This id was not found and not added to the <code>exception_providers_list</code>. The import enters an infinite loop and fails with HTTP Error 500.</li>
+<li>Solution: For me, setting the data source's status to 'published' worked</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org902f691" class="outline-3">
+<h3 id="org902f691"><span class="section-number-3">2.2.</span> Cannot access offset of type string on string</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li><p>
+Error:
+</p>
+<div class="org-src-container">
+<pre class="src src-nil">ResponseText: The website encountered an unexpected error. Try again later.TypeError: Cannot access offset of type string on string in Drupal\ai_automators\PluginBaseClasses\Boolean-&gt;verifyValue() (line 94 of modules/contrib/ai/modules/ai_automators/src/PluginBaseClasses/Boolean.php).
+</pre>
+</div></li>
+<li>the same error is thrown on line 110
+<ul class="org-ul">
+<li>Explanation: Some boolean elements in the ECA (such as whether or not the field 'overwrite existing entries by AI' is checked in the data source settings) are apparently passed as strings through the ECA. The Boolean.php of the <code>ai_automators</code> plugin takes only arrays in line 94 and 110.</li>
+</ul></li>
+<li><p>
+Solution: As a hotfix I forced casting every value that is not an array to an array. That seems to work for now
+</p>
+<div class="org-src-container">
+<pre class="src src-nil">
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf165a14" class="outline-3">
+<h3 id="orgf165a14"><span class="section-number-3">2.3.</span> OpenAI API doesn't handle strings</h3>
+<div class="outline-text-3" id="text-2-3">
+<ul class="org-ul">
+<li><p>
+Error:
+</p>
+<div class="org-src-container">
+<pre class="src src-nil">TypeError: OpenAI\Responses\Chat\CreateResponse::from(): Argument #1 ($attributes) must be of type array, string given, called in /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/src/Resources/Chat.php on line 35 in OpenAI\Responses\Chat\CreateResponse::from() (line 46 of /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/src/Responses/Chat/CreateResponse.php).
+</pre>
+</div></li>
+<li>Explanation: Like in <a href="#org902f691">this error</a> the ECA that does the AI-enrichment seems to pass a string where an array is expected</li>
+<li>Solution:
+<ul class="org-ul">
+<li>Changing the php code and forcing strings to array could work</li>
+<li>Fundamentally, the issue should be addressed in the ECA</li>
+<li>Changing the API from OpenAI to Anthropic avoids the issue so I did this</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgbd4a14e" class="outline-3">
+<h3 id="orgbd4a14e"><span class="section-number-3">2.4.</span> Examples of formatting errors when running a migration</h3>
+<div class="outline-text-3" id="text-2-4">
+</div>
+<div id="outline-container-org3c2f1d6" class="outline-4">
+<h4 id="org3c2f1d6"><span class="section-number-4">2.4.1.</span> Whitespaces and different languages</h4>
+<div class="outline-text-4" id="text-2-4-1">
+<ul class="org-ul">
+<li><p>
+Error:
+</p>
+<div class="org-src-container">
+<pre class="src src-nil">
+#+begin_src 
+  4536 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'Augst 2006' using the format 'F Y'. Error: The date cannot be created from a format. 8363 1 teca:field_information_resource_date:format_date: Format date plugin could not transform '2015' using the format 'F Y'. Error: The date cannot be created from a format. 8653 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'February 2016 ' using the format 'F Y'. Error: The date cannot be created from a format. 8707 1 teca:field_information_resource_date:format_date: Format date plugin could not transform ' April 2016 ' using the format 'F Y'. Error: The date cannot be created from a format. 2471 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'August 2015 ' using the format 'F Y'. Error: The date cannot be created from a format. 2699 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'May 2013 ' using the format 'F Y'. Error: The date cannot be created from a format. 2019 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'May 2011 ' using the format 'F Y'. Error: The date cannot be created from a format. 2466 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'March 2005 ' using the format 'F Y'. Error: The date cannot be created from a format. 2555 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'March 2018 ' using the format 'F Y'. Error: The date cannot be created from a format. 10038 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'May 2015 ' using the format 'F Y'. Error: The date cannot be created from a format. 10126 1 teca:field_information_resource_date:format_date: Format date plugin could not transform ' April 2021' using the format 'F Y'. Error: The date cannot be created from a format. 10105 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'Février 2015' using the format 'F Y'. Error: The date cannot be created from a format. 10106 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'Février 2015' using the format 'F Y'. Error: The date cannot be created from a format.
+</pre>
+</div></li>
+<li>Explanation:
+<ol class="org-ol">
+<li>Some entries don't follow the general formatting of 'F Y' (written month in English and Year)</li>
+<li>Some entries have trailing or leading whitespaces. In this particular case the <code>trim</code> function of Drupal migrate didn't remove them, because they are non-standard whitespaces</li>
+<li>Some Month names are written in French</li>
+</ol></li>
+<li>Solution: In this case it was only a handful of entries and I fixed them manually. In general this should be flagged to whoever was/is curating the original data</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org4030b8b" class="outline-2">
+<h2 id="org4030b8b"><span class="section-number-2">3.</span> How to change taxonomy terms&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>Web menu -&gt; Structure -&gt; Taxonomy -&gt; &lt;AFS innovation use cases&gt;</li>
+</ul>
+</div>
+<div id="outline-container-org1952019" class="outline-3">
+<h3 id="org1952019"><span class="section-number-3">3.1.</span> Custom Taxonomy</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>Structure -&gt; Taxonomy -&gt; Create vocabulary</li>
+<li>Add terms manually one by one
+<ul class="org-ul">
+<li>Faster alternative (deactivated): Extend -&gt; Taxonomy Manager
+<ol class="org-ol">
+<li>Install</li>
+<li>Structure -&gt; Taxonomy Manager -&gt; &lt;new category&gt; -&gt; paste \n - separated list</li>
+<li>Structure -&gt; Content types -&gt; original record -&gt; create new fields</li>
+<li>Structure -&gt; Content types -&gt; ai-extracted record -&gt; create new fields</li>
+<li>Structure -&gt; Content types -&gt; innovation -&gt; create new fields</li>
+<li>Change ECA; add the new</li>
+</ol></li>
+</ul></li>
+</ul>
+
+<p>
+tl
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Created: 2025-10-07 Tue 10:14</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

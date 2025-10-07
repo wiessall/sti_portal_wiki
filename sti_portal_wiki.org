@@ -1,0 +1,134 @@
+* Importing data in Drupal                                           :drupal:
+** Content workflow; Imports
+  - This commands lists all content types' machine names 
+#+begin_src 
+  drush eval "print_r(array_keys(\Drupal::entityTypeManager()->getStorage('node_type')->loadMultiple()));"
+
+Array
+(
+    [0] => asti_data
+    [1] => definitions
+    [2] => digital_asset
+    [3] => extracted_entity
+    [4] => initiative
+    [5] => innovation
+    [6] => innovation_core
+    [7] => innovation_extracted_from_origin
+    [8] => internal_content
+    [9] => learning_resource
+    [10] => organization
+    [11] => source_record
+    [12] => taxonomy_description
+    [13] => web_page
+    [14] => website_section
+)
+#+end_src
+  - To find out which fields are available for each content type, run
+  #+begin_src 
+    drush field:info node <e.g. source_record>
+  #+end_src
+  - This will give you an idea which information should ideally already be present when importing the data
+  - To understand what those fields are supposed to contain, you can consult the taxonomy page (Web menu -> About -> Taxonomies -> <e.g. Use Cases>
+    + This will help you understand if the data source of choice has a matching taxonomy
+** Importing data
+  - The general workflow from original record (~source_record~) to AI-extracted record (~extracted_entity~) and finally the innovation (~innovation~) you find on the user-facing website is:
+    1. write migration.yml file
+    2. upload source file (json, csv, ...) to ~web/modules/custom/<your_module_name>/source/<your_source_name_as_in_yml>~)
+    3. ~drush migrate:import <your migration id>~
+** Rolling back
+  - This generally fails because of a malformatted migration file or typos etc in the source data, to rollback you do
+    1. ~drush migrate:stop <your migration id>~ to stop any migration process going on
+    2. ~drush migrate:reset <your migration id>~ to set the migration status to 'idle' (i.e. ready to import)
+    3. ~drush migrate:rollback <your migration id>~ to remove any partially imported records
+  - Some notes on rollback: If you already have downstream content types based off of earlier imported source records, you're prone to create duplicates when rolling back & re-importing the same sources. Your options are then:
+    1. ~drush migrate:rollback <your migration id> --update~ to only update ~source_record~ that changed in the source data (because you e.g. changed the json structure)
+    2. Purge all downstream content by going to (Web menu -> BACK-END -> Manage <content type>)
+       1. Once there, filter for all content of interest, select the action 'Delete' from the Action drop-down and execute
+       2. You might need to do this 3 times, for 'Original Record', 'AI-extracted innovation record' and 'Innovation'
+       3. After purging existing data, you can run ~drush migrate:import <your migration id>~ again
+** From Original record to innovation
+  1. Web menu -> BACK-END -> manage data sources
+     + Search: <your data source>
+     + Edit tag: STI portal data source (also ATIO, should the data be imported into ATIO)
+     + Publish (I encountered problems with the AI-enhancement if I didn't do this)
+     + select if
+       - can be overwritten by AI
+       - allow overwriting by original record
+       - allow overwriting by extracted innovation record
+  2. Web menu -> BACK-END -> Workflows for original records 
+     + Source: <your data source> (should auto-complete at this point)
+     + filter
+     + select all
+     + generate/update extracted innovations from original records
+  3. Web menu -> BACK-END -> Workflows for ai-extracted innovations
+     1. Enrich derived innovation record with AI if empty (settings allow a bit less cautious)
+        - max 250, better 50 at a time (otherwise you risk a timeout error)
+        - if not loading, change the 'start' in the url for 'stop': ~https://sti-portal-prototype.net/stiportal_dev/web/batch?id=3342&op=start~ -> ~https://sti-portal-prototype.net/stiportal_dev/web/batch?id=3342&op=stop~
+     2. Generate/update innovation records from AI extracted records
+        - to see what can go wrong & how to fix it: [[id:3bf4ac43-2cea-4ab1-aa14-5789bcf21adf][Error log: AI enhancement]]
+     3. Check that the innovations are displayed correctly in the website if you open your data source's collection page
+** Notes
+  - Make sure that there are no duplicates in the source data. This means whatever field is used as 'id' is truly unique. Good candidates are project numbers, urls or, if no alternative, the full title 
+  - 'Titles' have a character limit
+* Error log: AI enhancement
+:PROPERTIES:
+:ID:       3bf4ac43-2cea-4ab1-aa14-5789bcf21adf
+:END:
+** Data source not found in exception list
+  - Error:
+    #+begin_src 
+      Check action successor current_prov_id (Activity_12o35fp) from ECA VBO - Generate / update AI derived innovation records from original records (process_yoqnpd7) for event eca_vbo.execute. - session_user (Entity user/46/wiessalla) - entity (Entity node/source_record/35689/ Corte (Poda) das folhas do coqueiro na região de Bicol) - node (Entity node/source_record/35689/ Corte (Poda) das folhas do coqueiro na região de Bicol) - except_providers_view (DTO) - 0 (Entity node/digital_asset/28182/Country Annual Report (CAR)) - 1 (Entity node/digital_asset/28184/Digital Agriculture Programme Priority Area (BP5) ) - 2 (Entity node/digital_asset/25260/Seeding The Future Global Food System Innovation Database and Network) - 3 (Entity node/digital_asset/19987/Technologies for African Agricultural Transformation (TAAT)) - 4 (Entity node/digital_asset/20007/World Overview of Conservation Approaches and Technologies (WOCAT)) - exception_provider (DTO "0") - exceptions_count (DTO "0") - provider_id_read (DTO "28182") - provider_id (DTO "28182") - exception_providers_list (DTO) - 0 (DTO "20007") - 1 (DTO "19987") - 2 (DTO "25260") - 3 (DTO "28184") - 4 (DTO "28182") - orig_rec (Entity node/source_record/35689/ Corte (Poda) das folhas do coqueiro na região de Bicol) - rec_sources (DTO) - 0 (Entity node/digital_asset/4/FAO Technologies and Practices for Small Agricultural Producers (TECA)) - counter (DTO "-17243") - current_prov_id (NULL) - user (Entity user/1/admin) - event (DTO) - view (DTO) - id (string "backend2") - display_id (string "page_7") - action (DTO) - plugin (string "eca_vbo_execute:generate_update_extracted_innovations_from_original_records") - config (DTO) - operation_name (string "Generate / update extracted innovations from original records") - message_override (string "") - skip_confirm (integer "0") - entity (DTO) - id (string "35689") - label (string " Corte (Poda) das folhas do coqueiro na região de Bicol") - type (string "node") - bundle (string "source_record") - langcode (string "en") - machine_name (string "eca_vbo.execute")
+    #+end_src
+    - Explanation: In the example I was trying to add new AI-extracted innovations to the provider 'TECA' with the ~provider_id~ 4. This id was not found and not added to the ~exception_providers_list~. The import enters an infinite loop and fails with HTTP Error 500.
+    - Solution: For me, setting the data source's status to 'published' worked
+** Cannot access offset of type string on string
+:PROPERTIES:
+:ID:       215a7a78-228e-4a00-831a-ae15f43785a7
+:END:
+  - Error:
+    #+begin_src 
+    ResponseText: The website encountered an unexpected error. Try again later.TypeError: Cannot access offset of type string on string in Drupal\ai_automators\PluginBaseClasses\Boolean->verifyValue() (line 94 of modules/contrib/ai/modules/ai_automators/src/PluginBaseClasses/Boolean.php).
+    #+end_src
+  - the same error is thrown on line 110
+    + Explanation: Some boolean elements in the ECA (such as whether or not the field 'overwrite existing entries by AI' is checked in the data source settings) are apparently passed as strings through the ECA. The Boolean.php of the ~ai_automators~ plugin takes only arrays in line 94 and 110.
+  - Solution: As a hotfix I forced casting every value that is not an array to an array. That seems to work for now
+    #+begin_src 
+    #+end_src
+** OpenAI API doesn't handle strings
+  - Error:
+    #+begin_src 
+      TypeError: OpenAI\Responses\Chat\CreateResponse::from(): Argument #1 ($attributes) must be of type array, string given, called in /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/src/Resources/Chat.php on line 35 in OpenAI\Responses\Chat\CreateResponse::from() (line 46 of /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/src/Responses/Chat/CreateResponse.php).
+    #+end_src
+  - Explanation: Like in [[id:215a7a78-228e-4a00-831a-ae15f43785a7][this error]] the ECA that does the AI-enrichment seems to pass a string where an array is expected
+  - Solution:
+    + Changing the php code and forcing strings to array could work
+    + Fundamentally, the issue should be addressed in the ECA
+    + Changing the API from OpenAI to Anthropic avoids the issue so I did this
+** Examples of formatting errors when running a migration
+*** Whitespaces and different languages
+  - Error:
+    #+begin_src 
+      
+#+begin_src 
+  4536 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'Augst 2006' using the format 'F Y'. Error: The date cannot be created from a format. 8363 1 teca:field_information_resource_date:format_date: Format date plugin could not transform '2015' using the format 'F Y'. Error: The date cannot be created from a format. 8653 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'February 2016 ' using the format 'F Y'. Error: The date cannot be created from a format. 8707 1 teca:field_information_resource_date:format_date: Format date plugin could not transform ' April 2016 ' using the format 'F Y'. Error: The date cannot be created from a format. 2471 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'August 2015 ' using the format 'F Y'. Error: The date cannot be created from a format. 2699 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'May 2013 ' using the format 'F Y'. Error: The date cannot be created from a format. 2019 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'May 2011 ' using the format 'F Y'. Error: The date cannot be created from a format. 2466 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'March 2005 ' using the format 'F Y'. Error: The date cannot be created from a format. 2555 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'March 2018 ' using the format 'F Y'. Error: The date cannot be created from a format. 10038 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'May 2015 ' using the format 'F Y'. Error: The date cannot be created from a format. 10126 1 teca:field_information_resource_date:format_date: Format date plugin could not transform ' April 2021' using the format 'F Y'. Error: The date cannot be created from a format. 10105 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'Février 2015' using the format 'F Y'. Error: The date cannot be created from a format. 10106 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'Février 2015' using the format 'F Y'. Error: The date cannot be created from a format.
+  #+end_src
+  - Explanation:
+    1. Some entries don't follow the general formatting of 'F Y' (written month in English and Year)
+    2. Some entries have trailing or leading whitespaces. In this particular case the ~trim~ function of Drupal migrate didn't remove them, because they are non-standard whitespaces
+    3. Some Month names are written in French
+  - Solution: In this case it was only a handful of entries and I fixed them manually. In general this should be flagged to whoever was/is curating the original data
+* How to change taxonomy terms                                       :drupal:
+  - Web menu -> Structure -> Taxonomy -> <AFS innovation use cases>
+** Custom Taxonomy
+  - Structure -> Taxonomy -> Create vocabulary
+  - Add terms manually one by one
+    + Faster alternative (deactivated): Extend -> Taxonomy Manager
+      1. Install
+      2. Structure -> Taxonomy Manager -> <new category> -> paste \n - separated list
+      3. Structure -> Content types -> original record -> create new fields 
+      4. Structure -> Content types -> ai-extracted record -> create new fields
+      5. Structure -> Content types -> innovation -> create new fields
+      6. Change ECA; add the new 
+    
+tl
+    
