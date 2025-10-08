@@ -1,44 +1,305 @@
----
-layout: default
-title: STI portal backend documentation
----
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-10-08 Wed 15:15 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(function(h) {
+h.style.cursor = 'pointer';
+const next = [];
+let el = h.nextElementSibling;
+while (el && !/^H[1-6]$/.test(el.tagName)) {
+next.push(el);
+el = el.nextElementSibling;
+}
+next.forEach(e => e.style.display = 'none');
+h.addEventListener('click', () => {
+const hidden = next[0].style.display === 'none';
+next.forEach(e => e.style.display = hidden ? '' : 'none');
+});
+});
+});
+</script>
+<style>
+h1, h2, h3, h4, h5, h6::before {
+content: "▶ ";
+font-size: 0.8em;
+transition: transform 0.2s;
+}
+h1.open::before, h2.open::before, h3.open::before,
+h4.open::before, h5.open::before, h6.open::before {
+content: "▼ ";
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(function(h) {
+h.addEventListener('click', function() {
+h.classList.toggle('open');
+});
+});
+});
+</script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
 <body>
 <div id="content" class="content">
 <div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3b01fd9">1. Importing data in Drupal&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></a>
+<li><a href="#orgca702f9">1. Importing data in Drupal&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></a>
 <ul>
-<li><a href="#org13b2408">1.1. Content workflow; Imports</a></li>
-<li><a href="#org093c0e2">1.2. Importing data</a></li>
-<li><a href="#org228ba47">1.3. Rolling back</a></li>
-<li><a href="#org422c761">1.4. From Original record to innovation</a></li>
-<li><a href="#org8672f94">1.5. Notes</a></li>
-<li><a href="#orgca33795">1.6. yaml Template for import</a>
+<li><a href="#org9b0c957">1.1. Content workflow; Imports</a></li>
+<li><a href="#org8e98590">1.2. Importing data</a></li>
+<li><a href="#orgc0e7c98">1.3. Rolling back</a></li>
+<li><a href="#orgee8544e">1.4. From Original record to innovation</a></li>
+<li><a href="#org73f6bbf">1.5. Notes</a></li>
+<li><a href="#org2486060">1.6. yaml Template for import</a>
 <ul>
-<li><a href="#orgd5d358d">1.6.1. Minimum fields for migration</a></li>
-<li><a href="#org1af74a0">1.6.2. Drupal plugins and their use to fill different fields in the migration</a></li>
+<li><a href="#org9b1c55c">1.6.1. Minimum fields for migration</a></li>
+<li><a href="#org56a8cd4">1.6.2. Drupal plugins and their use to fill different fields in the migration</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org306ff8b">2. Error log: AI enhancement</a>
+<li><a href="#org450e388">2. Error log: AI enhancement</a>
 <ul>
-<li><a href="#org7b20b19">2.1. Data source not found in exception list</a></li>
-<li><a href="#orgce8c8ad">2.2. Cannot access offset of type string on string</a></li>
-<li><a href="#org8902bff">2.3. OpenAI API doesn't handle strings</a></li>
-<li><a href="#org953e7f3">2.4. Examples of formatting errors when running a migration</a>
+<li><a href="#orgc3c4c3a">2.1. Data source not found in exception list</a></li>
+<li><a href="#org90a44f2">2.2. Cannot access offset of type string on string</a></li>
+<li><a href="#org260db31">2.3. OpenAI API doesn't handle strings</a></li>
+<li><a href="#orga96e262">2.4. Examples of formatting errors when running a migration</a>
 <ul>
-<li><a href="#org3b1124e">2.4.1. Whitespaces and different languages</a></li>
+<li><a href="#org6329b3d">2.4.1. Whitespaces and different languages</a></li>
 </ul>
 </li>
-<li><a href="#orgbfa831e">2.5. Gemini API changed</a></li>
+<li><a href="#org935ae85">2.5. Gemini API changed</a></li>
 </ul>
 </li>
-<li><a href="#orge5a2f2b">3. How to change taxonomy terms&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></a>
+<li><a href="#org984199a">3. How to change taxonomy terms&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></a>
 <ul>
-<li><a href="#orgf7d4c3a">3.1. Custom Taxonomy</a></li>
+<li><a href="#org7f00511">3.1. Custom Taxonomy</a></li>
 </ul>
 </li>
 </ul>
@@ -48,12 +309,12 @@ title: STI portal backend documentation
 layout: default
 title: STI portal backend documentation
 ---
-<div id="outline-container-org3b01fd9" class="outline-2">
-<h2 id="org3b01fd9"><span class="section-number-2">1.</span> Importing data in Drupal&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></h2>
+<div id="outline-container-orgca702f9" class="outline-2">
+<h2 id="orgca702f9"><span class="section-number-2">1.</span> Importing data in Drupal&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org13b2408" class="outline-3">
-<h3 id="org13b2408"><span class="section-number-3">1.1.</span> Content workflow; Imports</h3>
+<div id="outline-container-org9b0c957" class="outline-3">
+<h3 id="org9b0c957"><span class="section-number-3">1.1.</span> Content workflow; Imports</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>This commands lists all content types' machine names</li>
@@ -97,8 +358,8 @@ Array
 </ul>
 </div>
 </div>
-<div id="outline-container-org093c0e2" class="outline-3">
-<h3 id="org093c0e2"><span class="section-number-3">1.2.</span> Importing data</h3>
+<div id="outline-container-org8e98590" class="outline-3">
+<h3 id="org8e98590"><span class="section-number-3">1.2.</span> Importing data</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>The general workflow from original record (<code>source_record</code>) to AI-extracted record (<code>extracted_entity</code>) and finally the innovation (<code>innovation</code>) you find on the user-facing website is:
@@ -110,8 +371,8 @@ Array
 </ul>
 </div>
 </div>
-<div id="outline-container-org228ba47" class="outline-3">
-<h3 id="org228ba47"><span class="section-number-3">1.3.</span> Rolling back</h3>
+<div id="outline-container-orgc0e7c98" class="outline-3">
+<h3 id="orgc0e7c98"><span class="section-number-3">1.3.</span> Rolling back</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>This generally fails because of a malformatted migration file or typos etc in the source data, to rollback you do
@@ -133,8 +394,8 @@ Array
 </ul>
 </div>
 </div>
-<div id="outline-container-org422c761" class="outline-3">
-<h3 id="org422c761"><span class="section-number-3">1.4.</span> From Original record to innovation</h3>
+<div id="outline-container-orgee8544e" class="outline-3">
+<h3 id="orgee8544e"><span class="section-number-3">1.4.</span> From Original record to innovation</h3>
 <div class="outline-text-3" id="text-1-4">
 <ol class="org-ol">
 <li>Web menu -&gt; BACK-END -&gt; manage data sources
@@ -165,15 +426,15 @@ Array
 </ul></li>
 <li>Generate/update innovation records from AI extracted records
 <ul class="org-ul">
-<li>to see what can go wrong &amp; how to fix it: <a href="#org306ff8b">Error log: AI enhancement</a></li>
+<li>to see what can go wrong &amp; how to fix it: <a href="#org450e388">Error log: AI enhancement</a></li>
 </ul></li>
 <li>Check that the innovations are displayed correctly in the website if you open your data source's collection page</li>
 </ol></li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org8672f94" class="outline-3">
-<h3 id="org8672f94"><span class="section-number-3">1.5.</span> Notes</h3>
+<div id="outline-container-org73f6bbf" class="outline-3">
+<h3 id="org73f6bbf"><span class="section-number-3">1.5.</span> Notes</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>Make sure that there are no duplicates in the source data. This means whatever field is used as 'id' is truly unique. Good candidates are project numbers, urls or, if no alternative, the full title</li>
@@ -181,8 +442,8 @@ Array
 </ul>
 </div>
 </div>
-<div id="outline-container-orgca33795" class="outline-3">
-<h3 id="orgca33795"><span class="section-number-3">1.6.</span> yaml Template for import</h3>
+<div id="outline-container-org2486060" class="outline-3">
+<h3 id="org2486060"><span class="section-number-3">1.6.</span> yaml Template for import</h3>
 <div class="outline-text-3" id="text-1-6">
 <div class="org-src-container">
 <pre class="src src-yaml">    <span style="color: #cdd6f4;">uuid</span>: &lt;added after import, delete this column before importing&gt;
@@ -362,8 +623,8 @@ The migration has 4 top-level parts:
 </div></li>
 </ul>
 </div>
-<div id="outline-container-orgd5d358d" class="outline-4">
-<h4 id="orgd5d358d"><span class="section-number-4">1.6.1.</span> Minimum fields for migration</h4>
+<div id="outline-container-org9b1c55c" class="outline-4">
+<h4 id="org9b1c55c"><span class="section-number-4">1.6.1.</span> Minimum fields for migration</h4>
 <div class="outline-text-4" id="text-1-6-1">
 <p>
 What should you parse out from the data? What should be there? I think the list below is good for a start:
@@ -376,7 +637,7 @@ What should you parse out from the data? What should be there? I think the list 
 </ul>
 </div>
 <ol class="org-ol">
-<li><a id="org1d39cfc"></a>Additional: Should be sourced from the data<br />
+<li><a id="orgee4c40b"></a>Additional: Should be sourced from the data<br />
 <div class="outline-text-5" id="text-1-6-1-1">
 <ul class="org-ul">
 <li><code>field_link</code></li>
@@ -389,12 +650,12 @@ What should you parse out from the data? What should be there? I think the list 
 </li>
 </ol>
 </div>
-<div id="outline-container-org1af74a0" class="outline-4">
-<h4 id="org1af74a0"><span class="section-number-4">1.6.2.</span> Drupal plugins and their use to fill different fields in the migration</h4>
+<div id="outline-container-org56a8cd4" class="outline-4">
+<h4 id="org56a8cd4"><span class="section-number-4">1.6.2.</span> Drupal plugins and their use to fill different fields in the migration</h4>
 <div class="outline-text-4" id="text-1-6-2">
 </div>
 <ol class="org-ol">
-<li><a id="orga8a9f06"></a><code>entity_lookup</code>, <code>skip_on_empty</code> and <code>explode</code><br />
+<li><a id="org44b2692"></a><code>entity_lookup</code>, <code>skip_on_empty</code> and <code>explode</code><br />
 <div class="outline-text-5" id="text-1-6-2-1">
 <ul class="org-ul">
 <li>Example</li>
@@ -427,7 +688,7 @@ What should you parse out from the data? What should be there? I think the list 
 </ul>
 </div>
 </li>
-<li><a id="orgd187c86"></a><code>static_map</code><br />
+<li><a id="org6ac556e"></a><code>static_map</code><br />
 <div class="outline-text-5" id="text-1-6-2-2">
 <ul class="org-ul">
 <li>Example:</li>
@@ -462,7 +723,7 @@ What should you parse out from the data? What should be there? I think the list 
 </ul>
 </div>
 </li>
-<li><a id="orgb46f7fa"></a><code>entity_lookup</code><br />
+<li><a id="org8bde47e"></a><code>entity_lookup</code><br />
 <div class="outline-text-5" id="text-1-6-2-3">
 <ul class="org-ul">
 <li>Example</li>
@@ -483,17 +744,17 @@ What should you parse out from the data? What should be there? I think the list 
 </ul>
 </div>
 </li>
-<li><a id="orgf669dd8"></a><br /></li>
+<li><a id="orgc5623c2"></a><br /></li>
 </ol>
 </div>
 </div>
 </div>
-<div id="outline-container-org306ff8b" class="outline-2">
-<h2 id="org306ff8b"><span class="section-number-2">2.</span> Error log: AI enhancement</h2>
+<div id="outline-container-org450e388" class="outline-2">
+<h2 id="org450e388"><span class="section-number-2">2.</span> Error log: AI enhancement</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org7b20b19" class="outline-3">
-<h3 id="org7b20b19"><span class="section-number-3">2.1.</span> Data source not found in exception list</h3>
+<div id="outline-container-orgc3c4c3a" class="outline-3">
+<h3 id="orgc3c4c3a"><span class="section-number-3">2.1.</span> Data source not found in exception list</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><p>
@@ -528,8 +789,8 @@ Error:
 </ul>
 </div>
 </div>
-<div id="outline-container-orgce8c8ad" class="outline-3">
-<h3 id="orgce8c8ad"><span class="section-number-3">2.2.</span> Cannot access offset of type string on string</h3>
+<div id="outline-container-org90a44f2" class="outline-3">
+<h3 id="org90a44f2"><span class="section-number-3">2.2.</span> Cannot access offset of type string on string</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li><p>
@@ -586,8 +847,8 @@ public function storeValues(ContentEntityInterface $entity, array $values, Field
 </ul>
 </div>
 </div>
-<div id="outline-container-org8902bff" class="outline-3">
-<h3 id="org8902bff"><span class="section-number-3">2.3.</span> OpenAI API doesn't handle strings</h3>
+<div id="outline-container-org260db31" class="outline-3">
+<h3 id="org260db31"><span class="section-number-3">2.3.</span> OpenAI API doesn't handle strings</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li><p>
@@ -600,7 +861,7 @@ called in /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/
 (line 46 of /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/src/Responses/Chat/CreateResponse.php).
 </pre>
 </div></li>
-<li>Explanation: Like in <a href="#orgce8c8ad">this error</a> the ECA that does the AI-enrichment seems to pass a string where an array is expected</li>
+<li>Explanation: Like in <a href="#org90a44f2">this error</a> the ECA that does the AI-enrichment seems to pass a string where an array is expected</li>
 <li>Solution:
 <ul class="org-ul">
 <li>Changing the php code and forcing strings to array could work</li>
@@ -610,12 +871,12 @@ called in /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/
 </ul>
 </div>
 </div>
-<div id="outline-container-org953e7f3" class="outline-3">
-<h3 id="org953e7f3"><span class="section-number-3">2.4.</span> Examples of formatting errors when running a migration</h3>
+<div id="outline-container-orga96e262" class="outline-3">
+<h3 id="orga96e262"><span class="section-number-3">2.4.</span> Examples of formatting errors when running a migration</h3>
 <div class="outline-text-3" id="text-2-4">
 </div>
-<div id="outline-container-org3b1124e" class="outline-4">
-<h4 id="org3b1124e"><span class="section-number-4">2.4.1.</span> Whitespaces and different languages</h4>
+<div id="outline-container-org6329b3d" class="outline-4">
+<h4 id="org6329b3d"><span class="section-number-4">2.4.1.</span> Whitespaces and different languages</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <ul class="org-ul">
 <li><p>
@@ -663,8 +924,8 @@ Error:
 </div>
 </div>
 </div>
-<div id="outline-container-orgbfa831e" class="outline-3">
-<h3 id="orgbfa831e"><span class="section-number-3">2.5.</span> Gemini API changed</h3>
+<div id="outline-container-org935ae85" class="outline-3">
+<h3 id="org935ae85"><span class="section-number-3">2.5.</span> Gemini API changed</h3>
 <div class="outline-text-3" id="text-2-5">
 <ul class="org-ul">
 <li>this seems to be the case quite often</li>
@@ -673,15 +934,15 @@ Error:
 </div>
 </div>
 </div>
-<div id="outline-container-orge5a2f2b" class="outline-2">
-<h2 id="orge5a2f2b"><span class="section-number-2">3.</span> How to change taxonomy terms&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></h2>
+<div id="outline-container-org984199a" class="outline-2">
+<h2 id="org984199a"><span class="section-number-2">3.</span> How to change taxonomy terms&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Web menu -&gt; Structure -&gt; Taxonomy -&gt; &lt;AFS innovation use cases&gt;</li>
 </ul>
 </div>
-<div id="outline-container-orgf7d4c3a" class="outline-3">
-<h3 id="orgf7d4c3a"><span class="section-number-3">3.1.</span> Custom Taxonomy</h3>
+<div id="outline-container-org7f00511" class="outline-3">
+<h3 id="org7f00511"><span class="section-number-3">3.1.</span> Custom Taxonomy</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Structure -&gt; Taxonomy -&gt; Create vocabulary</li>
@@ -703,7 +964,7 @@ Error:
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2025-10-08 Wed 15:06</p>
+<p class="date">Created: 2025-10-08 Wed 15:15</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

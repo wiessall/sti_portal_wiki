@@ -4,7 +4,44 @@ layout: default
 title: STI portal backend documentation
 ---
 #+END_EXPORT
-#+OPTIONS: html-style:nil
+#+HTML_HEAD_EXTRA: <script>
+#+HTML_HEAD_EXTRA: document.addEventListener('DOMContentLoaded', function() {
+#+HTML_HEAD_EXTRA:   document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(function(h) {
+#+HTML_HEAD_EXTRA:     h.style.cursor = 'pointer';
+#+HTML_HEAD_EXTRA:     const next = [];
+#+HTML_HEAD_EXTRA:     let el = h.nextElementSibling;
+#+HTML_HEAD_EXTRA:     while (el && !/^H[1-6]$/.test(el.tagName)) {
+#+HTML_HEAD_EXTRA:       next.push(el);
+#+HTML_HEAD_EXTRA:       el = el.nextElementSibling;
+#+HTML_HEAD_EXTRA:     }
+#+HTML_HEAD_EXTRA:     next.forEach(e => e.style.display = 'none');
+#+HTML_HEAD_EXTRA:     h.addEventListener('click', () => {
+#+HTML_HEAD_EXTRA:       const hidden = next[0].style.display === 'none';
+#+HTML_HEAD_EXTRA:       next.forEach(e => e.style.display = hidden ? '' : 'none');
+#+HTML_HEAD_EXTRA:     });
+#+HTML_HEAD_EXTRA:   });
+#+HTML_HEAD_EXTRA: });
+#+HTML_HEAD_EXTRA: </script>
+#+HTML_HEAD_EXTRA: <style>
+#+HTML_HEAD_EXTRA: h1, h2, h3, h4, h5, h6::before {
+#+HTML_HEAD_EXTRA:   content: "▶ ";
+#+HTML_HEAD_EXTRA:   font-size: 0.8em;
+#+HTML_HEAD_EXTRA:   transition: transform 0.2s;
+#+HTML_HEAD_EXTRA: }
+#+HTML_HEAD_EXTRA: h1.open::before, h2.open::before, h3.open::before,
+#+HTML_HEAD_EXTRA: h4.open::before, h5.open::before, h6.open::before {
+#+HTML_HEAD_EXTRA:   content: "▼ ";
+#+HTML_HEAD_EXTRA: }
+#+HTML_HEAD_EXTRA: </style>
+#+HTML_HEAD_EXTRA: <script>
+#+HTML_HEAD_EXTRA: document.addEventListener('DOMContentLoaded', function() {
+#+HTML_HEAD_EXTRA:   document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(function(h) {
+#+HTML_HEAD_EXTRA:     h.addEventListener('click', function() {
+#+HTML_HEAD_EXTRA:       h.classList.toggle('open');
+#+HTML_HEAD_EXTRA:     });
+#+HTML_HEAD_EXTRA:   });
+#+HTML_HEAD_EXTRA: });
+#+HTML_HEAD_EXTRA: </script>
 
 * Importing data in Drupal                                           :drupal:
 ** Content workflow; Imports
