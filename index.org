@@ -37,44 +37,13 @@ title: STI portal backend documentation
 #+HTML_HEAD_EXTRA: document.addEventListener('DOMContentLoaded', function() {
 #+HTML_HEAD_EXTRA:   document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(function(h) {
 #+HTML_HEAD_EXTRA:     h.addEventListener('click', function() {
-#+HTML_HEAD_EXTRA:       h.classList.toggle('open');
+#+HTML_HEAD_EXTRA:       h.classList.toggle('close);
 #+HTML_HEAD_EXTRA:     });
 #+HTML_HEAD_EXTRA:   });
 #+HTML_HEAD_EXTRA: });
 #+HTML_HEAD_EXTRA: </script>
 
 * Importing data in Drupal                                           :drupal:
-** Content workflow; Imports
-  - This commands lists all content types' machine names 
-#+begin_src 
-  drush eval "print_r(array_keys(\Drupal::entityTypeManager()->getStorage('node_type')->loadMultiple()));"
-
-Array
-(
-    [0] => asti_data
-    [1] => definitions
-    [2] => digital_asset
-    [3] => extracted_entity
-    [4] => initiative
-    [5] => innovation
-    [6] => innovation_core
-    [7] => innovation_extracted_from_origin
-    [8] => internal_content
-    [9] => learning_resource
-    [10] => organization
-    [11] => source_record
-    [12] => taxonomy_description
-    [13] => web_page
-    [14] => website_section
-)
-#+end_src
-  - To find out which fields are available for each content type, run
-  #+begin_src 
-    drush field:info node <e.g. source_record>
-  #+end_src
-  - This will give you an idea which information should ideally already be present when importing the data
-  - To understand what those fields are supposed to contain, you can consult the taxonomy page (Web menu -> About -> Taxonomies -> <e.g. Use Cases>
-    + This will help you understand if the data source of choice has a matching taxonomy
 ** Importing data
   - The general workflow from original record (~source_record~) to AI-extracted record (~extracted_entity~) and finally the innovation (~innovation~) you find on the user-facing website is:
     1. write migration.yml file
@@ -91,30 +60,6 @@ Array
        1. Once there, filter for all content of interest, select the action 'Delete' from the Action drop-down and execute
        2. You might need to do this 3 times, for 'Original Record', 'AI-extracted innovation record' and 'Innovation'
        3. After purging existing data, you can run ~drush migrate:import <your migration id>~ again
-** From Original record to innovation
-  1. Web menu -> BACK-END -> manage data sources
-     + Search: <your data source>
-     + Edit tag: STI portal data source (also ATIO, should the data be imported into ATIO)
-     + Publish (I encountered problems with the AI-enhancement if I didn't do this)
-     + select if
-       - can be overwritten by AI
-       - allow overwriting by original record
-       - allow overwriting by extracted innovation record
-  2. Web menu -> BACK-END -> Workflows for original records 
-     + Source: <your data source> (should auto-complete at this point)
-     + filter
-     + select all
-     + generate/update extracted innovations from original records
-  3. Web menu -> BACK-END -> Workflows for ai-extracted innovations
-     1. Enrich derived innovation record with AI if empty (settings allow a bit less cautious)
-        - max 250, better 50 at a time (otherwise you risk a timeout error)
-        - if not loading, change the 'start' in the url for 'stop': ~https://sti-portal-prototype.net/stiportal_dev/web/batch?id=3342&op=start~ -> ~https://sti-portal-prototype.net/stiportal_dev/web/batch?id=3342&op=stop~
-     2. Generate/update innovation records from AI extracted records
-        - to see what can go wrong & how to fix it: [[id:3bf4ac43-2cea-4ab1-aa14-5789bcf21adf][Error log: AI enhancement]]
-     3. Check that the innovations are displayed correctly in the website if you open your data source's collection page
-** Notes
-  - Make sure that there are no duplicates in the source data. This means whatever field is used as 'id' is truly unique. Good candidates are project numbers, urls or, if no alternative, the full title 
-  - 'Titles' have a character limit
 ** yaml Template for import
   #+begin_src yaml
     uuid: <added after import, delete this column before importing>
@@ -362,6 +307,61 @@ migration_dependencies:
   - Explanation: Fill in the corresponding term fromt he taxonomy found in the corresponding bundle. This needs to be an exact match, i.e. this step is done after ~static_map~ or using a pre-defined constant like in the example.
   - to find the correct machine name for the bundle in question go to Web menu -> About -> Taxonomies -> <click on taxonomy> -> <click on the taxonomy name/title again>. You should find the Machine name next to the title
 **** 
+** Content workflow; Imports
+  - This commands lists all content types' machine names 
+#+begin_src 
+  drush eval "print_r(array_keys(\Drupal::entityTypeManager()->getStorage('node_type')->loadMultiple()));"
+
+Array
+(
+    [0] => asti_data
+    [1] => definitions
+    [2] => digital_asset
+    [3] => extracted_entity
+    [4] => initiative
+    [5] => innovation
+    [6] => innovation_core
+    [7] => innovation_extracted_from_origin
+    [8] => internal_content
+    [9] => learning_resource
+    [10] => organization
+    [11] => source_record
+    [12] => taxonomy_description
+    [13] => web_page
+    [14] => website_section
+)
+#+end_src
+  - To find out which fields are available for each content type, run
+  #+begin_src 
+    drush field:info node <e.g. source_record>
+  #+end_src
+  - This will give you an idea which information should ideally already be present when importing the data
+  - To understand what those fields are supposed to contain, you can consult the taxonomy page (Web menu -> About -> Taxonomies -> <e.g. Use Cases>
+    + This will help you understand if the data source of choice has a matching taxonomy
+** From Original record to innovation
+  1. Web menu -> BACK-END -> manage data sources
+     + Search: <your data source>
+     + Edit tag: STI portal data source (also ATIO, should the data be imported into ATIO)
+     + Publish (I encountered problems with the AI-enhancement if I didn't do this)
+     + select if
+       - can be overwritten by AI
+       - allow overwriting by original record
+       - allow overwriting by extracted innovation record
+  2. Web menu -> BACK-END -> Workflows for original records 
+     + Source: <your data source> (should auto-complete at this point)
+     + filter
+     + select all
+     + generate/update extracted innovations from original records
+  3. Web menu -> BACK-END -> Workflows for ai-extracted innovations
+     1. Enrich derived innovation record with AI if empty (settings allow a bit less cautious)
+        - max 250, better 50 at a time (otherwise you risk a timeout error)
+        - if not loading, change the 'start' in the url for 'stop': ~https://sti-portal-prototype.net/stiportal_dev/web/batch?id=3342&op=start~ -> ~https://sti-portal-prototype.net/stiportal_dev/web/batch?id=3342&op=stop~
+     2. Generate/update innovation records from AI extracted records
+        - to see what can go wrong & how to fix it: [[id:3bf4ac43-2cea-4ab1-aa14-5789bcf21adf][Error log: AI enhancement]]
+     3. Check that the innovations are displayed correctly in the website if you open your data source's collection page
+** Notes
+  - Make sure that there are no duplicates in the source data. This means whatever field is used as 'id' is truly unique. Good candidates are project numbers, urls or, if no alternative, the full title 
+  - 'Titles' have a character limit
 * Error log: AI enhancement
 :PROPERTIES:
 :ID:       3bf4ac43-2cea-4ab1-aa14-5789bcf21adf
