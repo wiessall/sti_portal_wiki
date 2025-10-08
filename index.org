@@ -1,3 +1,6 @@
+#+OPTIONS: html-style:nil
+
+
 * Importing data in Drupal                                           :drupal:
 ** Content workflow; Imports
   - This commands lists all content types' machine names 
@@ -70,6 +73,253 @@ Array
 ** Notes
   - Make sure that there are no duplicates in the source data. This means whatever field is used as 'id' is truly unique. Good candidates are project numbers, urls or, if no alternative, the full title 
   - 'Titles' have a character limit
+** yaml Template for import
+  #+begin_src yaml
+    uuid: <added after import, delete this column before importing>
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - <import_STI_portal_data / import_IRD_jsons>
+id: <machine reference to this migration>
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: STI
+migration_group: STI-import-group
+label: <description, e.g. the one found in Manage data sources>
+source:
+  plugin: <csv / json>
+  constants:
+    SOURCE: <source name as found in Manage data sources>
+    SOURCE_ID: <source name as found in the Manage data sources url>
+    RECTYPE: <check what rectypes are set in Mange data source>
+  path: <path to the json or csv file to migrate>
+  header_offset: 0
+  ids:
+    - <the data column containing unique IDs, eg. id, url, title>
+process:
+  field_data_source: constants/SOURCE_ID # Needed so that imported records are assigned to the correct data source
+  field_original_internal_id:
+    plugin: skip_on_empty
+    source: <give the same as set in 'ids' above>
+    method: row
+    message: 'Row does not contain Project Symbol: skipped'
+  title:
+    plugin: skip_on_empty
+    source: <data column containing the name/title of the entry>
+    method: row
+    message: 'Row does not contain title: skipped'
+  type:
+    plugin: default_value
+    default_value: source_record # leave unchanged, you're importing a 'source_record'
+  field_shorter_description/value:
+    -
+      plugin: skip_on_empty
+      source: <data column containing a 1-2 sentence description>
+      method: process
+      message: 'Row does not contain short descr.'
+  field_shorter_description/format:
+    plugin: default_value
+    default_value: full_html
+  field_long_description/value:
+    -
+      plugin: skip_on_empty
+      source: <data column containing a long freetext description>
+      method: process
+      message: 'Row does not contain short descr.'
+  field_long_description/format:
+    plugin: default_value
+    default_value: full_html
+  time:
+    plugin: callback
+    callable: time
+    unpack_source: true
+    source: {  }
+  field_impact_sdgs:
+    - plugin: explode
+      delimiter: ','
+      source: <data column mentioning sdgs>
+    - plugin: callback
+      callable: trim
+    - plugin: preg_replace
+      pattern: '\..*'
+      replace: ''
+    - 
+      # Often it is necessary to map however sdgs are named in the source data to the STI portal taxonomy
+      plugin: static_map
+      map:
+        '1': 'Goal 1: No poverty'
+        '2': 'Goal 2: Zero hunger'
+        '3': 'Goal 3: Good health and well-being'
+        '4': 'Goal 4: Quality education'
+        '5': 'Goal 5: Gender equality'
+        '6': 'Goal 6: Clean water and sanitation'
+        '7': 'Goal 7: Affordable and clean energy'
+        '8': 'Goal 8: Decent work and economic growth'
+        '9': 'Goal 9: Industry, innovation and infrastructure'
+        '10': 'Goal 10: Reduced inequalities'
+        '11': 'Goal 11: Sustainable cities and communities'
+        '12': 'Goal 12: Responsible consumption and production'
+        '13': 'Goal 13: Climate action'
+        '14': 'Goal 14: Life below water'
+        '15': 'Goal 15: Life on land'
+        '16': 'Goal 16: Peace, justice and strong institutions'
+        '17': 'Goal 17: Partnerships for the goals'
+      default_value: ''
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      ignore_case: true
+      value_key: name
+      bundle: impact_sdgs
+  field_region:
+  -
+    plugin: entity_generate 
+    entity_type: taxonomy_term
+    ignore_case: true
+    value_key: name
+    source: <region column or field>
+    bundle: countries_no_standard
+  field_innovation_type:
+  -
+    plugin: explode
+    source: <innovation column or field>
+    delimiter: '-'
+  - plugin: callback
+    callable: trim
+  -
+    plugin: entity_lookup
+    entity_type: taxonomy_term
+    ignore_case: true
+    value_key: name
+    bundle: type
+  field_use_cases:
+  -
+    plugin: explode
+    source: <use cases column or field>
+    delimiter: '-'
+  - plugin: callback
+    callable: trim
+  -
+    plugin: entity_lookup
+    entity_type: taxonomy_term
+    ignore_case: true
+    value_key: name
+    bundle: use_cases
+  field_adoption_countries_ns: # this field is needed in case country names do not follow the UN/FAO - Standards
+    - 
+      plugin: skip_on_empty
+      method: process
+      source: <use cases column or field>
+    -
+      plugin: explode
+      delimiter: '-'
+    -
+      plugin: entity_generate
+      entity_type: taxonomy_term
+      ignore_case: true
+      value_key: name
+      bundle: countries_no_standard
+destination:
+  plugin: 'entity:node'
+  default_bundle: source_record
+  overwrite_properties:
+    - field_data_source
+    - field_original_internal_id
+    - field_shorter_description/value
+    - field_long_description/value
+migration_dependencies:
+  required: {  }
+
+  #+end_src
+  - The migration has 4 top-level parts:
+    1. The header sections ~id~, ~label~, etc
+    2. ~source~ describing the source data and its structure
+    3. ~process~ describing how to read, process and pass on the source data fields
+    4. ~destination~ describing where the data is supposed to end up. Just put:
+    #+begin_src yaml
+      plugin: 'entity:node'
+      default_bundle: source_record
+    #+end_src
+*** Minimum fields for migration
+  What should you parse out from the data? What should be there? I think the list below is good for a start:
+  - ~title~
+  - ~field_original_internal_id~
+  - ~field_shorter_description~
+  - ~field_long_description~
+**** Additional: Should be sourced from the data
+  - ~field_link~
+  - ~field_owner~
+  - ~field_impact_sdgs~
+  - ~field_country_origin~
+  - ~field_countries_adoption~
+*** Drupal plugins and their use to fill different fields in the migration
+**** ~entity_lookup~, ~skip_on_empty~ and ~explode~
+  - Example
+  #+begin_src yaml
+    field_adoption_countries_ns: # this field is needed in case country names do not follow the UN/FAO - Standards
+    - 
+      plugin: skip_on_empty
+      method: process
+      source: <use cases column or field>
+    -
+      plugin: explode
+      delimiter: '-'
+    -
+      plugin: entity_generate
+      entity_type: taxonomy_term
+      ignore_case: true
+      value_key: name
+      bundle: countries_no_standard
+  #+end_src
+  - Explanation:
+    + Multiple plugins can be chained like above. The execution order is top-to-bottom. The first plugin must receive the ~source~ data column or field.
+    + ~skip_on_empty~ is a sanity check. If the field/column is not filled for this row or entry, it will simply not be filled (and skipped). This avoids errors when migrating data with empty fields. You need to give it a ~method:~ (process or row)
+    + ~explode~ is used if a field/column contains multiple values. In a csv file it might be that '|' or '-' are used as a separator for a 'unclean' field containing more than one value
+    + ~entity_generate~ generates a new taxonomy term if no exactly matching one can be found (e.g. data uses 'FAO' while taxonomy expects 'Food and Agriculture Organization of the United Nations'. That can either be cleaned up later by manually replacing /or/ one uses ai-mapping logic like is done for the ~field_adoption_countries_ns~ entry. It finds the closest real taxonomy term and automatically replaces them
+**** ~static_map~
+  - Example:
+  #+begin_src yaml
+    - 
+      # Often it is necessary to map however sdgs are named in the source data to the STI portal taxonomy
+      plugin: static_map
+      map:
+        '1': 'Goal 1: No poverty'
+        '2': 'Goal 2: Zero hunger'
+        '3': 'Goal 3: Good health and well-being'
+        '4': 'Goal 4: Quality education'
+        '5': 'Goal 5: Gender equality'
+        '6': 'Goal 6: Clean water and sanitation'
+        '7': 'Goal 7: Affordable and clean energy'
+        '8': 'Goal 8: Decent work and economic growth'
+        '9': 'Goal 9: Industry, innovation and infrastructure'
+        '10': 'Goal 10: Reduced inequalities'
+        '11': 'Goal 11: Sustainable cities and communities'
+        '12': 'Goal 12: Responsible consumption and production'
+        '13': 'Goal 13: Climate action'
+        '14': 'Goal 14: Life below water'
+        '15': 'Goal 15: Life on land'
+        '16': 'Goal 16: Peace, justice and strong institutions'
+        '17': 'Goal 17: Partnerships for the goals'
+      default_value: ''
+  #+end_src
+  - Explanation: This plugin works if you can guarantee a one-to-one mapping of how data entries are written in the data source to how they are represented in the taxonomy. On the left-hand side of the colon put the way the entry is written in the data source, on the right side the way its written in the taxonomy. Right-hand side seems to ignore case, but make sure that the entries are written exactly matching to the taxonomy terms.
+**** ~entity_lookup~
+  - Example
+  #+begin_src yaml
+    field_type_of_information_manage:
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      ignore_case: true
+      value_key: name
+      source: constants/RECTYPE
+      bundle: source_entity_types
+  #+end_src
+  - Explanation: Fill in the corresponding term fromt he taxonomy found in the corresponding bundle. This needs to be an exact match, i.e. this step is done after ~static_map~ or using a pre-defined constant like in the example.
+  - to find the correct machine name for the bundle in question go to Web menu -> About -> Taxonomies -> <click on taxonomy> -> <click on the taxonomy name/title again>. You should find the Machine name next to the title
+**** 
 * Error log: AI enhancement
 :PROPERTIES:
 :ID:       3bf4ac43-2cea-4ab1-aa14-5789bcf21adf
@@ -77,7 +327,25 @@ Array
 ** Data source not found in exception list
   - Error:
     #+begin_src 
-      Check action successor current_prov_id (Activity_12o35fp) from ECA VBO - Generate / update AI derived innovation records from original records (process_yoqnpd7) for event eca_vbo.execute. - session_user (Entity user/46/wiessalla) - entity (Entity node/source_record/35689/ Corte (Poda) das folhas do coqueiro na região de Bicol) - node (Entity node/source_record/35689/ Corte (Poda) das folhas do coqueiro na região de Bicol) - except_providers_view (DTO) - 0 (Entity node/digital_asset/28182/Country Annual Report (CAR)) - 1 (Entity node/digital_asset/28184/Digital Agriculture Programme Priority Area (BP5) ) - 2 (Entity node/digital_asset/25260/Seeding The Future Global Food System Innovation Database and Network) - 3 (Entity node/digital_asset/19987/Technologies for African Agricultural Transformation (TAAT)) - 4 (Entity node/digital_asset/20007/World Overview of Conservation Approaches and Technologies (WOCAT)) - exception_provider (DTO "0") - exceptions_count (DTO "0") - provider_id_read (DTO "28182") - provider_id (DTO "28182") - exception_providers_list (DTO) - 0 (DTO "20007") - 1 (DTO "19987") - 2 (DTO "25260") - 3 (DTO "28184") - 4 (DTO "28182") - orig_rec (Entity node/source_record/35689/ Corte (Poda) das folhas do coqueiro na região de Bicol) - rec_sources (DTO) - 0 (Entity node/digital_asset/4/FAO Technologies and Practices for Small Agricultural Producers (TECA)) - counter (DTO "-17243") - current_prov_id (NULL) - user (Entity user/1/admin) - event (DTO) - view (DTO) - id (string "backend2") - display_id (string "page_7") - action (DTO) - plugin (string "eca_vbo_execute:generate_update_extracted_innovations_from_original_records") - config (DTO) - operation_name (string "Generate / update extracted innovations from original records") - message_override (string "") - skip_confirm (integer "0") - entity (DTO) - id (string "35689") - label (string " Corte (Poda) das folhas do coqueiro na região de Bicol") - type (string "node") - bundle (string "source_record") - langcode (string "en") - machine_name (string "eca_vbo.execute")
+      Check action successor current_prov_id (Activity_12o35fp) from ECA VBO - Generate / update AI derived innovation records from original records (process_yoqnpd7) for event eca_vbo.execute.
+      - session_user (Entity user/46/wiessalla) - entity (Entity node/source_record/35689/ Corte (Poda) das folhas do coqueiro na região de Bicol)
+      - node (Entity node/source_record/35689/ Corte (Poda) das folhas do coqueiro na região de Bicol)
+      - except_providers_view (DTO) - 
+      0 (Entity node/digital_asset/28182/Country Annual Report (CAR)) - 
+      1 (Entity node/digital_asset/28184/Digital Agriculture Programme Priority Area (BP5) ) - 
+      2 (Entity node/digital_asset/25260/Seeding The Future Global Food System Innovation Database and Network) - 
+      3 (Entity node/digital_asset/19987/Technologies for African Agricultural Transformation (TAAT)) - 
+      4 (Entity node/digital_asset/20007/World Overview of Conservation Approaches and Technologies (WOCAT)) - exception_provider (DTO "0") - exceptions_count (DTO "0") - provider_id_read (DTO "28182") - provider_id (DTO "28182") - exception_providers_list (DTO) - 
+      0 (DTO "20007") - 1 (DTO "19987") - 2 (DTO "25260") - 3 (DTO "28184") - 
+      4 (DTO "28182") - orig_rec (Entity node/source_record/35689/ Corte (Poda) das folhas do coqueiro na região de Bicol) - rec_sources (DTO) - 
+      0 (Entity node/digital_asset/4/FAO Technologies and Practices for Small Agricultural Producers (TECA))
+      - counter (DTO "-17243") - current_prov_id (NULL) - user (Entity user/1/admin) - event (DTO)
+      - view (DTO) - id (string "backend2") - display_id (string "page_7") - action (DTO)
+      - plugin (string "eca_vbo_execute:generate_update_extracted_innovations_from_original_records")
+      - config (DTO) - operation_name (string "Generate / update extracted innovations from original records") - message_override (string "")
+      - skip_confirm (integer "0") - entity (DTO) - id (string "35689")
+      - label (string " Corte (Poda) das folhas do coqueiro na região de Bicol")
+      - type (string "node") - bundle (string "source_record") - langcode (string "en") - machine_name (string "eca_vbo.execute")
     #+end_src
     - Explanation: In the example I was trying to add new AI-extracted innovations to the provider 'TECA' with the ~provider_id~ 4. This id was not found and not added to the ~exception_providers_list~. The import enters an infinite loop and fails with HTTP Error 500.
     - Solution: For me, setting the data source's status to 'published' worked
@@ -87,45 +355,50 @@ Array
 :END:
   - Error:
     #+begin_src 
-    ResponseText: The website encountered an unexpected error. Try again later.TypeError: Cannot access offset of type string on string in Drupal\ai_automators\PluginBaseClasses\Boolean->verifyValue() (line 94 of modules/contrib/ai/modules/ai_automators/src/PluginBaseClasses/Boolean.php).
+    ResponseText: The website encountered an unexpected error. Try again later.
+    TypeError: Cannot access offset of type string on string in Drupal\ai_automators\PluginBaseClasses\Boolean->verifyValue()
+    (line 94 of modules/contrib/ai/modules/ai_automators/src/PluginBaseClasses/Boolean.php).
     #+end_src
   - the same error is thrown on line 110
     + Explanation: Some boolean elements in the ECA (such as whether or not the field 'overwrite existing entries by AI' is checked in the data source settings) are apparently passed as strings through the ECA. The Boolean.php of the ~ai_automators~ plugin (~web/modules/contrib/ai/modules/ai_automators/src/PluginBaseClasses/Boolean.php~)
  takes only arrays in line 94 and 110.
   - Solution: As a hotfix I forced casting every value that is not an array to an array. That seems to work for now
-    #+begin_src 
-      92   public function verifyValue(ContentEntityInterface $entity, $value, FieldDefinitionInterface $fieldDefinit    ion, array $automatorConfig) {
-      93     // Has to be string boolean.
-      94     if (!is_array($value)) { #! changed
-      95       $value = ['value' => $value];
-      96     }
-      97     if (!in_array($value['value'], ['TRUE', 'FALSE', '0', '1', 0, 1])) {
-      98       return FALSE;
-      99     }
-      100     // Otherwise it is ok.
-      101     return TRUE;
-      102   }
-      103 
-      104   /**
-      105    * {@inheritDoc}
-      106    */
-      107   public function storeValues(ContentEntityInterface $entity, array $values, FieldDefinitionInterface $field    Definition, array $automatorConfig) {
-      108     // Transform string to boolean.
-      109     foreach ($values as $key => $value) {
-      110       if (!is_array($value)) { #! changed 
-      111         $value = ['value' => $value];
-      112       }
-      113       $values[$key] = in_array($value['value'], ['TRUE', '1', 1]) ? TRUE : FALSE;
-      114     }
-      115     // Then set the value.
-      116     $entity->set($fieldDefinition->getName(), $values);
-      117     return TRUE;
-      118   }
+    #+begin_src php
+         public function verifyValue(ContentEntityInterface $entity, $value, FieldDefinitionInterface $fieldDefinit    ion, array $automatorConfig) {
+           // Has to be string boolean.
+           if (!is_array($value)) { #! changed
+             $value = ['value' => $value];
+           }
+           if (!in_array($value['value'], ['TRUE', 'FALSE', '0', '1', 0, 1])) {
+             return FALSE;
+           }
+           // Otherwise it is ok.
+           return TRUE;
+         }
+       
+         /**
+          * {@inheritDoc}
+          */
+         public function storeValues(ContentEntityInterface $entity, array $values, FieldDefinitionInterface $field    Definition, array $automatorConfig) {
+           // Transform string to boolean.
+           foreach ($values as $key => $value) {
+             if (!is_array($value)) { #! changed 
+               $value = ['value' => $value];
+             }
+             $values[$key] = in_array($value['value'], ['TRUE', '1', 1]) ? TRUE : FALSE;
+           }
+           // Then set the value.
+           $entity->set($fieldDefinition->getName(), $values);
+           return TRUE;
+         }
     #+end_src
 ** OpenAI API doesn't handle strings
   - Error:
     #+begin_src 
-      TypeError: OpenAI\Responses\Chat\CreateResponse::from(): Argument #1 ($attributes) must be of type array, string given, called in /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/src/Resources/Chat.php on line 35 in OpenAI\Responses\Chat\CreateResponse::from() (line 46 of /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/src/Responses/Chat/CreateResponse.php).
+      TypeError: OpenAI\Responses\Chat\CreateResponse::from():
+      Argument #1 ($attributes) must be of type array, string given,
+      called in /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/src/Resources/Chat.php on line 35 in OpenAI\Responses\Chat\CreateResponse::from()
+      (line 46 of /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/src/Responses/Chat/CreateResponse.php).
     #+end_src
   - Explanation: Like in [[id:215a7a78-228e-4a00-831a-ae15f43785a7][this error]] the ECA that does the AI-enrichment seems to pass a string where an array is expected
   - Solution:
@@ -137,14 +410,42 @@ Array
   - Error:
     #+begin_src 
       
-#+begin_src 
-  4536 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'Augst 2006' using the format 'F Y'. Error: The date cannot be created from a format. 8363 1 teca:field_information_resource_date:format_date: Format date plugin could not transform '2015' using the format 'F Y'. Error: The date cannot be created from a format. 8653 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'February 2016 ' using the format 'F Y'. Error: The date cannot be created from a format. 8707 1 teca:field_information_resource_date:format_date: Format date plugin could not transform ' April 2016 ' using the format 'F Y'. Error: The date cannot be created from a format. 2471 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'August 2015 ' using the format 'F Y'. Error: The date cannot be created from a format. 2699 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'May 2013 ' using the format 'F Y'. Error: The date cannot be created from a format. 2019 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'May 2011 ' using the format 'F Y'. Error: The date cannot be created from a format. 2466 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'March 2005 ' using the format 'F Y'. Error: The date cannot be created from a format. 2555 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'March 2018 ' using the format 'F Y'. Error: The date cannot be created from a format. 10038 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'May 2015 ' using the format 'F Y'. Error: The date cannot be created from a format. 10126 1 teca:field_information_resource_date:format_date: Format date plugin could not transform ' April 2021' using the format 'F Y'. Error: The date cannot be created from a format. 10105 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'Février 2015' using the format 'F Y'. Error: The date cannot be created from a format. 10106 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'Février 2015' using the format 'F Y'. Error: The date cannot be created from a format.
+  #+begin_src 
+  4536 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'Augst 
+  2006' using the format 'F Y'. Error: The date cannot be created from a format. 
+  8363 1 teca:field_information_resource_date:format_date: Format date plugin could not transform '
+  2015' using the format 'F Y'. Error: The date cannot be created from a format. 
+  8653 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'February 
+  2016 ' using the format 'F Y'. Error: The date cannot be created from a format. 
+  8707 1 teca:field_information_resource_date:format_date: Format date plugin could not transform ' April 
+  2016 ' using the format 'F Y'. Error: The date cannot be created from a format. 
+  2471 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'August 
+  2015 ' using the format 'F Y'. Error: The date cannot be created from a format. 
+  2699 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'May 
+  2013 ' using the format 'F Y'. Error: The date cannot be created from a format. 
+  2019 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'May 
+  2011 ' using the format 'F Y'. Error: The date cannot be created from a format. 
+  2466 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'March 
+  2005 ' using the format 'F Y'. Error: The date cannot be created from a format. 
+  2555 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'March 
+  2018 ' using the format 'F Y'. Error: The date cannot be created from a format. 
+  10038 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'May 
+  2015 ' using the format 'F Y'. Error: The date cannot be created from a format. 
+  10126 1 teca:field_information_resource_date:format_date: Format date plugin could not transform ' April 
+  2021' using the format 'F Y'. Error: The date cannot be created from a format. 
+  10105 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'Février 
+  2015' using the format 'F Y'. Error: The date cannot be created from a format. 
+  10106 1 teca:field_information_resource_date:format_date: Format date plugin could not transform 'Février 
+  2015' using the format 'F Y'. Error: The date cannot be created from a format.
   #+end_src
   - Explanation:
     1. Some entries don't follow the general formatting of 'F Y' (written month in English and Year)
     2. Some entries have trailing or leading whitespaces. In this particular case the ~trim~ function of Drupal migrate didn't remove them, because they are non-standard whitespaces
     3. Some Month names are written in French
   - Solution: In this case it was only a handful of entries and I fixed them manually. In general this should be flagged to whoever was/is curating the original data
+** Gemini API changed
+  - this seems to be the case quite often
+  - 
 * How to change taxonomy terms                                       :drupal:
   - Web menu -> Structure -> Taxonomy -> <AFS innovation use cases>
 ** Custom Taxonomy
@@ -157,5 +458,3 @@ Array
       4. Structure -> Content types -> ai-extracted record -> create new fields
       5. Structure -> Content types -> innovation -> create new fields
       6. Change ECA; add the new 
-    
-    
