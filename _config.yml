@@ -1,4 +1,3 @@
 title: sti_portal_wiki
 baseurl: "/(root)"
-url: ""
 theme: jekyll-theme-modernist
