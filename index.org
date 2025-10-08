@@ -1,5 +1,10 @@
+#+BEGIN_EXPORT html
+---
+layout: default
+title: STI portal backend documentation
+---
+#+END_EXPORT
 #+OPTIONS: html-style:nil
-
 
 * Importing data in Drupal                                           :drupal:
 ** Content workflow; Imports
