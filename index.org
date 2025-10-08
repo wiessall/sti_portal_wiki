@@ -1,8 +1,3 @@
-#+BEGIN_EXPORT html
----
-layout: default
----
-
 * Importing data in Drupal                                           :drupal:
 ** Content workflow; Imports
   - This commands lists all content types' machine names 
@@ -95,9 +90,37 @@ Array
     ResponseText: The website encountered an unexpected error. Try again later.TypeError: Cannot access offset of type string on string in Drupal\ai_automators\PluginBaseClasses\Boolean->verifyValue() (line 94 of modules/contrib/ai/modules/ai_automators/src/PluginBaseClasses/Boolean.php).
     #+end_src
   - the same error is thrown on line 110
-    + Explanation: Some boolean elements in the ECA (such as whether or not the field 'overwrite existing entries by AI' is checked in the data source settings) are apparently passed as strings through the ECA. The Boolean.php of the ~ai_automators~ plugin takes only arrays in line 94 and 110.
+    + Explanation: Some boolean elements in the ECA (such as whether or not the field 'overwrite existing entries by AI' is checked in the data source settings) are apparently passed as strings through the ECA. The Boolean.php of the ~ai_automators~ plugin (~web/modules/contrib/ai/modules/ai_automators/src/PluginBaseClasses/Boolean.php~)
+ takes only arrays in line 94 and 110.
   - Solution: As a hotfix I forced casting every value that is not an array to an array. That seems to work for now
     #+begin_src 
+      92   public function verifyValue(ContentEntityInterface $entity, $value, FieldDefinitionInterface $fieldDefinit    ion, array $automatorConfig) {
+      93     // Has to be string boolean.
+      94     if (!is_array($value)) { #! changed
+      95       $value = ['value' => $value];
+      96     }
+      97     if (!in_array($value['value'], ['TRUE', 'FALSE', '0', '1', 0, 1])) {
+      98       return FALSE;
+      99     }
+      100     // Otherwise it is ok.
+      101     return TRUE;
+      102   }
+      103 
+      104   /**
+      105    * {@inheritDoc}
+      106    */
+      107   public function storeValues(ContentEntityInterface $entity, array $values, FieldDefinitionInterface $field    Definition, array $automatorConfig) {
+      108     // Transform string to boolean.
+      109     foreach ($values as $key => $value) {
+      110       if (!is_array($value)) { #! changed 
+      111         $value = ['value' => $value];
+      112       }
+      113       $values[$key] = in_array($value['value'], ['TRUE', '1', 1]) ? TRUE : FALSE;
+      114     }
+      115     // Then set the value.
+      116     $entity->set($fieldDefinition->getName(), $values);
+      117     return TRUE;
+      118   }
     #+end_src
 ** OpenAI API doesn't handle strings
   - Error:
@@ -135,5 +158,4 @@ Array
       5. Structure -> Content types -> innovation -> create new fields
       6. Change ECA; add the new 
     
-#+END_EXPORT
     

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-10-07 Tue 11:41 -->
+<!-- 2025-10-08 Wed 14:26 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -231,47 +231,48 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org4d3c062">1. Importing data in Drupal&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></a>
+<li><a href="#org355e33a">1. Importing data in Drupal&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></a>
 <ul>
-<li><a href="#orgfa61b68">1.1. Content workflow; Imports</a></li>
-<li><a href="#org1b96aa5">1.2. Importing data</a></li>
-<li><a href="#org59c3d2b">1.3. Rolling back</a></li>
-<li><a href="#org3dec287">1.4. From Original record to innovation</a></li>
-<li><a href="#org95bbb18">1.5. Notes</a></li>
-</ul>
-</li>
-<li><a href="#org2eda00c">2. Error log: AI enhancement</a>
+<li><a href="#orgdd04c04">1.1. Content workflow; Imports</a></li>
+<li><a href="#org550607c">1.2. Importing data</a></li>
+<li><a href="#orgeca4666">1.3. Rolling back</a></li>
+<li><a href="#org786198a">1.4. From Original record to innovation</a></li>
+<li><a href="#org0bf80f0">1.5. Notes</a></li>
+<li><a href="#org0ee54b5">1.6. yaml Template for import</a>
 <ul>
-<li><a href="#org49fcab3">2.1. Data source not found in exception list</a></li>
-<li><a href="#org631f34f">2.2. Cannot access offset of type string on string</a></li>
-<li><a href="#orgbf6a46b">2.3. OpenAI API doesn't handle strings</a></li>
-<li><a href="#org0ed2765">2.4. Examples of formatting errors when running a migration</a>
-<ul>
-<li><a href="#org05206e2">2.4.1. Whitespaces and different languages</a></li>
+<li><a href="#org37742d8">1.6.1. Minimum fields for migration</a></li>
+<li><a href="#orgb625a8c">1.6.2. Drupal plugins and their use to fill different fields in the migration</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgbd2fd13">3. How to change taxonomy terms&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></a>
+<li><a href="#org13efa55">2. Error log: AI enhancement</a>
 <ul>
-<li><a href="#orge409c4a">3.1. Custom Taxonomy</a></li>
+<li><a href="#org2ce38bd">2.1. Data source not found in exception list</a></li>
+<li><a href="#org9589a69">2.2. Cannot access offset of type string on string</a></li>
+<li><a href="#org273c89d">2.3. OpenAI API doesn't handle strings</a></li>
+<li><a href="#org10a1a83">2.4. Examples of formatting errors when running a migration</a>
+<ul>
+<li><a href="#org26541ca">2.4.1. Whitespaces and different languages</a></li>
+</ul>
+</li>
+<li><a href="#org5096d3f">2.5. Gemini API changed</a></li>
+</ul>
+</li>
+<li><a href="#orgd7228a5">3. How to change taxonomy terms&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></a>
+<ul>
+<li><a href="#orgb5dce1d">3.1. Custom Taxonomy</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<p>
-#+BEGIN<sub>EXPORT</sub> html
-&#x2014;
-layout: default
-&#x2014;
-</p>
-<div id="outline-container-org4d3c062" class="outline-2">
-<h2 id="org4d3c062"><span class="section-number-2">1.</span> Importing data in Drupal&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></h2>
+<div id="outline-container-org355e33a" class="outline-2">
+<h2 id="org355e33a"><span class="section-number-2">1.</span> Importing data in Drupal&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgfa61b68" class="outline-3">
-<h3 id="orgfa61b68"><span class="section-number-3">1.1.</span> Content workflow; Imports</h3>
+<div id="outline-container-orgdd04c04" class="outline-3">
+<h3 id="orgdd04c04"><span class="section-number-3">1.1.</span> Content workflow; Imports</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>This commands lists all content types' machine names</li>
@@ -315,8 +316,8 @@ Array
 </ul>
 </div>
 </div>
-<div id="outline-container-org1b96aa5" class="outline-3">
-<h3 id="org1b96aa5"><span class="section-number-3">1.2.</span> Importing data</h3>
+<div id="outline-container-org550607c" class="outline-3">
+<h3 id="org550607c"><span class="section-number-3">1.2.</span> Importing data</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>The general workflow from original record (<code>source_record</code>) to AI-extracted record (<code>extracted_entity</code>) and finally the innovation (<code>innovation</code>) you find on the user-facing website is:
@@ -328,8 +329,8 @@ Array
 </ul>
 </div>
 </div>
-<div id="outline-container-org59c3d2b" class="outline-3">
-<h3 id="org59c3d2b"><span class="section-number-3">1.3.</span> Rolling back</h3>
+<div id="outline-container-orgeca4666" class="outline-3">
+<h3 id="orgeca4666"><span class="section-number-3">1.3.</span> Rolling back</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>This generally fails because of a malformatted migration file or typos etc in the source data, to rollback you do
@@ -351,8 +352,8 @@ Array
 </ul>
 </div>
 </div>
-<div id="outline-container-org3dec287" class="outline-3">
-<h3 id="org3dec287"><span class="section-number-3">1.4.</span> From Original record to innovation</h3>
+<div id="outline-container-org786198a" class="outline-3">
+<h3 id="org786198a"><span class="section-number-3">1.4.</span> From Original record to innovation</h3>
 <div class="outline-text-3" id="text-1-4">
 <ol class="org-ol">
 <li>Web menu -&gt; BACK-END -&gt; manage data sources
@@ -383,15 +384,15 @@ Array
 </ul></li>
 <li>Generate/update innovation records from AI extracted records
 <ul class="org-ul">
-<li>to see what can go wrong &amp; how to fix it: <a href="#org2eda00c">Error log: AI enhancement</a></li>
+<li>to see what can go wrong &amp; how to fix it: <a href="#org13efa55">Error log: AI enhancement</a></li>
 </ul></li>
 <li>Check that the innovations are displayed correctly in the website if you open your data source's collection page</li>
 </ol></li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org95bbb18" class="outline-3">
-<h3 id="org95bbb18"><span class="section-number-3">1.5.</span> Notes</h3>
+<div id="outline-container-org0bf80f0" class="outline-3">
+<h3 id="org0bf80f0"><span class="section-number-3">1.5.</span> Notes</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>Make sure that there are no duplicates in the source data. This means whatever field is used as 'id' is truly unique. Good candidates are project numbers, urls or, if no alternative, the full title</li>
@@ -399,13 +400,317 @@ Array
 </ul>
 </div>
 </div>
+<div id="outline-container-org0ee54b5" class="outline-3">
+<h3 id="org0ee54b5"><span class="section-number-3">1.6.</span> yaml Template for import</h3>
+<div class="outline-text-3" id="text-1-6">
+<div class="org-src-container">
+<pre class="src src-yaml">    <span style="color: #cdd6f4;">uuid</span>: &lt;added after import, delete this column before importing&gt;
+<span style="color: #cdd6f4;">langcode</span>: en
+<span style="color: #cdd6f4;">status</span>: <span style="color: #fab387;">true</span>
+<span style="color: #cdd6f4;">dependencies</span>:
+  <span style="color: #cdd6f4;">enforced</span>:
+    <span style="color: #cdd6f4;">module</span>:
+      - &lt;import_STI_portal_data / import_IRD_jsons&gt;
+<span style="color: #cdd6f4;">id</span>: &lt;machine reference to this migration&gt;
+<span style="color: #cdd6f4;">class</span>: <span style="color: #fab387;">null</span>
+<span style="color: #cdd6f4;">field_plugin_method</span>: <span style="color: #fab387;">null</span>
+<span style="color: #cdd6f4;">cck_plugin_method</span>: <span style="color: #fab387;">null</span>
+<span style="color: #cdd6f4;">migration_tags</span>: STI
+<span style="color: #cdd6f4;">migration_group</span>: STI-import-group
+<span style="color: #cdd6f4;">label</span>: &lt;description, e.g. the one found in Manage data sources&gt;
+<span style="color: #cdd6f4;">source</span>:
+  <span style="color: #cdd6f4;">plugin</span>: &lt;csv / json&gt;
+  <span style="color: #cdd6f4;">constants</span>:
+    <span style="color: #cdd6f4;">SOURCE</span>: &lt;source name as found in Manage data sources&gt;
+    <span style="color: #cdd6f4;">SOURCE_ID</span>: &lt;source name as found in the Manage data sources url&gt;
+    <span style="color: #cdd6f4;">RECTYPE</span>: &lt;check what rectypes are set in Mange data source&gt;
+  <span style="color: #cdd6f4;">path</span>: &lt;path to the json or csv file to migrate&gt;
+  <span style="color: #cdd6f4;">header_offset</span>: 0
+  <span style="color: #cdd6f4;">ids</span>:
+    - &lt;the data column containing unique IDs, eg. id, url, title&gt;
+<span style="color: #cdd6f4;">process</span>:
+  <span style="color: #cdd6f4;">field_data_source</span>: constants/SOURCE_ID <span style="color: #6c7086;"># </span><span style="color: #6c7086;">Needed so that imported records are assigned to the correct data source
+</span>  <span style="color: #cdd6f4;">field_original_internal_id</span>:
+    <span style="color: #cdd6f4;">plugin</span>: skip_on_empty
+    <span style="color: #cdd6f4;">source</span>: &lt;give the same as set in <span style="color: #a6e3a1;">'ids'</span> above&gt;
+    <span style="color: #cdd6f4;">method</span>: row
+    <span style="color: #cdd6f4;">message</span>: <span style="color: #a6e3a1;">'Row does not contain Project Symbol: skipped'</span>
+  <span style="color: #cdd6f4;">title</span>:
+    <span style="color: #cdd6f4;">plugin</span>: skip_on_empty
+    <span style="color: #cdd6f4;">source</span>: &lt;data column containing the name/title of the entry&gt;
+    <span style="color: #cdd6f4;">method</span>: row
+    <span style="color: #cdd6f4;">message</span>: <span style="color: #a6e3a1;">'Row does not contain title: skipped'</span>
+  <span style="color: #cdd6f4;">type</span>:
+    <span style="color: #cdd6f4;">plugin</span>: default_value
+    <span style="color: #cdd6f4;">default_value</span>: source_record <span style="color: #6c7086;"># </span><span style="color: #6c7086;">leave unchanged, you're importing a 'source_record'
+</span>  <span style="color: #cdd6f4;">field_shorter_description/value</span>:
+    <span style="color: #cdd6f4;">-
+      plugin</span>: skip_on_empty
+      <span style="color: #cdd6f4;">source</span>: &lt;data column containing a 1-2 sentence description&gt;
+      <span style="color: #cdd6f4;">method</span>: process
+      <span style="color: #cdd6f4;">message</span>: <span style="color: #a6e3a1;">'Row does not contain short descr.'</span>
+  <span style="color: #cdd6f4;">field_shorter_description/format</span>:
+    <span style="color: #cdd6f4;">plugin</span>: default_value
+    <span style="color: #cdd6f4;">default_value</span>: full_html
+  <span style="color: #cdd6f4;">field_long_description/value</span>:
+    <span style="color: #cdd6f4;">-
+      plugin</span>: skip_on_empty
+      <span style="color: #cdd6f4;">source</span>: &lt;data column containing a long freetext description&gt;
+      <span style="color: #cdd6f4;">method</span>: process
+      <span style="color: #cdd6f4;">message</span>: <span style="color: #a6e3a1;">'Row does not contain short descr.'</span>
+  <span style="color: #cdd6f4;">field_long_description/format</span>:
+    <span style="color: #cdd6f4;">plugin</span>: default_value
+    <span style="color: #cdd6f4;">default_value</span>: full_html
+  <span style="color: #cdd6f4;">time</span>:
+    <span style="color: #cdd6f4;">plugin</span>: callback
+    <span style="color: #cdd6f4;">callable</span>: time
+    <span style="color: #cdd6f4;">unpack_source</span>: <span style="color: #fab387;">true</span>
+    <span style="color: #cdd6f4;">source</span>: {  <span style="color: #cdd6f4;">}
+  field_impact_sdgs</span>:
+    - <span style="color: #cdd6f4;">plugin</span>: explode
+      <span style="color: #cdd6f4;">delimiter</span>: <span style="color: #a6e3a1;">','</span>
+      <span style="color: #cdd6f4;">source</span>: &lt;data column mentioning sdgs&gt;
+    - <span style="color: #cdd6f4;">plugin</span>: callback
+      <span style="color: #cdd6f4;">callable</span>: trim
+    - <span style="color: #cdd6f4;">plugin</span>: preg_replace
+      <span style="color: #cdd6f4;">pattern</span>: <span style="color: #a6e3a1;">'\..*'</span>
+      <span style="color: #cdd6f4;">replace</span>: <span style="color: #a6e3a1;">''</span>
+    - 
+      <span style="color: #6c7086;"># </span><span style="color: #6c7086;">Often it is necessary to map however sdgs are named in the source data to the STI portal taxonomy
+</span>      <span style="color: #cdd6f4;">plugin</span>: static_map
+      <span style="color: #cdd6f4;">map</span>:
+        <span style="color: #a6e3a1;">'1'</span>: <span style="color: #a6e3a1;">'Goal 1: No poverty'</span>
+        <span style="color: #a6e3a1;">'2'</span>: <span style="color: #a6e3a1;">'Goal 2: Zero hunger'</span>
+        <span style="color: #a6e3a1;">'3'</span>: <span style="color: #a6e3a1;">'Goal 3: Good health and well-being'</span>
+        <span style="color: #a6e3a1;">'4'</span>: <span style="color: #a6e3a1;">'Goal 4: Quality education'</span>
+        <span style="color: #a6e3a1;">'5'</span>: <span style="color: #a6e3a1;">'Goal 5: Gender equality'</span>
+        <span style="color: #a6e3a1;">'6'</span>: <span style="color: #a6e3a1;">'Goal 6: Clean water and sanitation'</span>
+        <span style="color: #a6e3a1;">'7'</span>: <span style="color: #a6e3a1;">'Goal 7: Affordable and clean energy'</span>
+        <span style="color: #a6e3a1;">'8'</span>: <span style="color: #a6e3a1;">'Goal 8: Decent work and economic growth'</span>
+        <span style="color: #a6e3a1;">'9'</span>: <span style="color: #a6e3a1;">'Goal 9: Industry, innovation and infrastructure'</span>
+        <span style="color: #a6e3a1;">'10'</span>: <span style="color: #a6e3a1;">'Goal 10: Reduced inequalities'</span>
+        <span style="color: #a6e3a1;">'11'</span>: <span style="color: #a6e3a1;">'Goal 11: Sustainable cities and communities'</span>
+        <span style="color: #a6e3a1;">'12'</span>: <span style="color: #a6e3a1;">'Goal 12: Responsible consumption and production'</span>
+        <span style="color: #a6e3a1;">'13'</span>: <span style="color: #a6e3a1;">'Goal 13: Climate action'</span>
+        <span style="color: #a6e3a1;">'14'</span>: <span style="color: #a6e3a1;">'Goal 14: Life below water'</span>
+        <span style="color: #a6e3a1;">'15'</span>: <span style="color: #a6e3a1;">'Goal 15: Life on land'</span>
+        <span style="color: #a6e3a1;">'16'</span>: <span style="color: #a6e3a1;">'Goal 16: Peace, justice and strong institutions'</span>
+        <span style="color: #a6e3a1;">'17'</span>: <span style="color: #a6e3a1;">'Goal 17: Partnerships for the goals'</span>
+      <span style="color: #cdd6f4;">default_value</span>: <span style="color: #a6e3a1;">''</span>
+    <span style="color: #cdd6f4;">-
+      plugin</span>: entity_lookup
+      <span style="color: #cdd6f4;">entity_type</span>: taxonomy_term
+      <span style="color: #cdd6f4;">ignore_case</span>: <span style="color: #fab387;">true</span>
+      <span style="color: #cdd6f4;">value_key</span>: name
+      <span style="color: #cdd6f4;">bundle</span>: impact_sdgs
+  <span style="color: #cdd6f4;">field_region</span>:
+  <span style="color: #cdd6f4;">-
+    plugin</span>: entity_generate 
+    <span style="color: #cdd6f4;">entity_type</span>: taxonomy_term
+    <span style="color: #cdd6f4;">ignore_case</span>: <span style="color: #fab387;">true</span>
+    <span style="color: #cdd6f4;">value_key</span>: name
+    <span style="color: #cdd6f4;">source</span>: &lt;region column or field&gt;
+    <span style="color: #cdd6f4;">bundle</span>: countries_no_standard
+  <span style="color: #cdd6f4;">field_innovation_type</span>:
+  <span style="color: #cdd6f4;">-
+    plugin</span>: explode
+    <span style="color: #cdd6f4;">source</span>: &lt;innovation column or field&gt;
+    <span style="color: #cdd6f4;">delimiter</span>: <span style="color: #a6e3a1;">'-'</span>
+  - <span style="color: #cdd6f4;">plugin</span>: callback
+    <span style="color: #cdd6f4;">callable</span>: trim
+  <span style="color: #cdd6f4;">-
+    plugin</span>: entity_lookup
+    <span style="color: #cdd6f4;">entity_type</span>: taxonomy_term
+    <span style="color: #cdd6f4;">ignore_case</span>: <span style="color: #fab387;">true</span>
+    <span style="color: #cdd6f4;">value_key</span>: name
+    <span style="color: #cdd6f4;">bundle</span>: type
+  <span style="color: #cdd6f4;">field_use_cases</span>:
+  <span style="color: #cdd6f4;">-
+    plugin</span>: explode
+    <span style="color: #cdd6f4;">source</span>: &lt;use cases column or field&gt;
+    <span style="color: #cdd6f4;">delimiter</span>: <span style="color: #a6e3a1;">'-'</span>
+  - <span style="color: #cdd6f4;">plugin</span>: callback
+    <span style="color: #cdd6f4;">callable</span>: trim
+  <span style="color: #cdd6f4;">-
+    plugin</span>: entity_lookup
+    <span style="color: #cdd6f4;">entity_type</span>: taxonomy_term
+    <span style="color: #cdd6f4;">ignore_case</span>: <span style="color: #fab387;">true</span>
+    <span style="color: #cdd6f4;">value_key</span>: name
+    <span style="color: #cdd6f4;">bundle</span>: use_cases
+  <span style="color: #cdd6f4;">field_adoption_countries_ns</span>: <span style="color: #6c7086;"># </span><span style="color: #6c7086;">this field is needed in case country names do not follow the UN/FAO - Standards
+</span>    - 
+      <span style="color: #cdd6f4;">plugin</span>: skip_on_empty
+      <span style="color: #cdd6f4;">method</span>: process
+      <span style="color: #cdd6f4;">source</span>: &lt;use cases column or field&gt;
+    <span style="color: #cdd6f4;">-
+      plugin</span>: explode
+      <span style="color: #cdd6f4;">delimiter</span>: <span style="color: #a6e3a1;">'-'</span>
+    <span style="color: #cdd6f4;">-
+      plugin</span>: entity_generate
+      <span style="color: #cdd6f4;">entity_type</span>: taxonomy_term
+      <span style="color: #cdd6f4;">ignore_case</span>: <span style="color: #fab387;">true</span>
+      <span style="color: #cdd6f4;">value_key</span>: name
+      <span style="color: #cdd6f4;">bundle</span>: countries_no_standard
+<span style="color: #cdd6f4;">destination</span>:
+  <span style="color: #cdd6f4;">plugin</span>: <span style="color: #a6e3a1;">'entity:node'</span>
+  <span style="color: #cdd6f4;">default_bundle</span>: source_record
+  <span style="color: #cdd6f4;">overwrite_properties</span>:
+    - field_data_source
+    - field_original_internal_id
+    - field_shorter_description/value
+    - field_long_description/value
+<span style="color: #cdd6f4;">migration_dependencies</span>:
+  <span style="color: #cdd6f4;">required</span>: {  }
+
+</pre>
 </div>
-<div id="outline-container-org2eda00c" class="outline-2">
-<h2 id="org2eda00c"><span class="section-number-2">2.</span> Error log: AI enhancement</h2>
+<ul class="org-ul">
+<li><p>
+The migration has 4 top-level parts:
+</p>
+<ol class="org-ol">
+<li>The header sections <code>id</code>, <code>label</code>, etc</li>
+<li><code>source</code> describing the source data and its structure</li>
+<li><code>process</code> describing how to read, process and pass on the source data fields</li>
+<li><code>destination</code> describing where the data is supposed to end up. Just put:</li>
+</ol>
+<div class="org-src-container">
+<pre class="src src-yaml"><span style="color: #cdd6f4;">plugin</span>: <span style="color: #a6e3a1;">'entity:node'</span>
+<span style="color: #cdd6f4;">default_bundle</span>: source_record
+</pre>
+</div></li>
+</ul>
+</div>
+<div id="outline-container-org37742d8" class="outline-4">
+<h4 id="org37742d8"><span class="section-number-4">1.6.1.</span> Minimum fields for migration</h4>
+<div class="outline-text-4" id="text-1-6-1">
+<p>
+What should you parse out from the data? What should be there? I think the list below is good for a start:
+<code>title</code>
+<code>field_original_internal_id</code>
+<code>field_shorter_description</code>
+<code>field_long_description</code>
+</p>
+</div>
+<ol class="org-ol">
+<li><a id="org1732f81"></a>Additional: Should be sourced from the data<br />
+<div class="outline-text-5" id="text-1-6-1-1">
+<p>
+<code>field_link</code>
+<code>field_owner</code>
+<code>field_impact_sdgs</code>
+<code>field_country_origin</code>
+<code>field_countries_adoption</code>
+</p>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-orgb625a8c" class="outline-4">
+<h4 id="orgb625a8c"><span class="section-number-4">1.6.2.</span> Drupal plugins and their use to fill different fields in the migration</h4>
+<div class="outline-text-4" id="text-1-6-2">
+</div>
+<ol class="org-ol">
+<li><a id="orgbe46550"></a><code>entity_lookup</code>, <code>skip_on_empty</code> and <code>explode</code><br />
+<div class="outline-text-5" id="text-1-6-2-1">
+<ul class="org-ul">
+<li>Example</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-yaml"><span style="color: #cdd6f4;">field_adoption_countries_ns</span>: <span style="color: #6c7086;"># </span><span style="color: #6c7086;">this field is needed in case country names do not follow the UN/FAO - Standards
+</span>- 
+  <span style="color: #cdd6f4;">plugin</span>: skip_on_empty
+  <span style="color: #cdd6f4;">method</span>: process
+  <span style="color: #cdd6f4;">source</span>: &lt;use cases column or field&gt;
+<span style="color: #cdd6f4;">-
+  plugin</span>: explode
+  <span style="color: #cdd6f4;">delimiter</span>: <span style="color: #a6e3a1;">'-'</span>
+<span style="color: #cdd6f4;">-
+  plugin</span>: entity_generate
+  <span style="color: #cdd6f4;">entity_type</span>: taxonomy_term
+  <span style="color: #cdd6f4;">ignore_case</span>: <span style="color: #fab387;">true</span>
+  <span style="color: #cdd6f4;">value_key</span>: name
+  <span style="color: #cdd6f4;">bundle</span>: countries_no_standard
+</pre>
+</div>
+<ul class="org-ul">
+<li>Explanation:
+<ul class="org-ul">
+<li>Multiple plugins can be chained like above. The execution order is top-to-bottom. The first plugin must receive the <code>source</code> data column or field.</li>
+<li><code>skip_on_empty</code> is a sanity check. If the field/column is not filled for this row or entry, it will simply not be filled (and skipped). This avoids errors when migrating data with empty fields. You need to give it a <code>method:</code> (process or row)</li>
+<li><code>explode</code> is used if a field/column contains multiple values. In a csv file it might be that '|' or '-' are used as a separator for a 'unclean' field containing more than one value</li>
+<li><code>entity_generate</code> generates a new taxonomy term if no exactly matching one can be found (e.g. data uses 'FAO' while taxonomy expects 'Food and Agriculture Organization of the United Nations'. That can either be cleaned up later by manually replacing <i>or</i> one uses ai-mapping logic like is done for the <code>field_adoption_countries_ns</code> entry. It finds the closest real taxonomy term and automatically replaces them</li>
+</ul></li>
+</ul>
+</div>
+</li>
+<li><a id="org20d392b"></a><code>static_map</code><br />
+<div class="outline-text-5" id="text-1-6-2-2">
+<ul class="org-ul">
+<li>Example:</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-yaml">- 
+  <span style="color: #6c7086;"># </span><span style="color: #6c7086;">Often it is necessary to map however sdgs are named in the source data to the STI portal taxonomy
+</span>  <span style="color: #cdd6f4;">plugin</span>: static_map
+  <span style="color: #cdd6f4;">map</span>:
+    <span style="color: #a6e3a1;">'1'</span>: <span style="color: #a6e3a1;">'Goal 1: No poverty'</span>
+    <span style="color: #a6e3a1;">'2'</span>: <span style="color: #a6e3a1;">'Goal 2: Zero hunger'</span>
+    <span style="color: #a6e3a1;">'3'</span>: <span style="color: #a6e3a1;">'Goal 3: Good health and well-being'</span>
+    <span style="color: #a6e3a1;">'4'</span>: <span style="color: #a6e3a1;">'Goal 4: Quality education'</span>
+    <span style="color: #a6e3a1;">'5'</span>: <span style="color: #a6e3a1;">'Goal 5: Gender equality'</span>
+    <span style="color: #a6e3a1;">'6'</span>: <span style="color: #a6e3a1;">'Goal 6: Clean water and sanitation'</span>
+    <span style="color: #a6e3a1;">'7'</span>: <span style="color: #a6e3a1;">'Goal 7: Affordable and clean energy'</span>
+    <span style="color: #a6e3a1;">'8'</span>: <span style="color: #a6e3a1;">'Goal 8: Decent work and economic growth'</span>
+    <span style="color: #a6e3a1;">'9'</span>: <span style="color: #a6e3a1;">'Goal 9: Industry, innovation and infrastructure'</span>
+    <span style="color: #a6e3a1;">'10'</span>: <span style="color: #a6e3a1;">'Goal 10: Reduced inequalities'</span>
+    <span style="color: #a6e3a1;">'11'</span>: <span style="color: #a6e3a1;">'Goal 11: Sustainable cities and communities'</span>
+    <span style="color: #a6e3a1;">'12'</span>: <span style="color: #a6e3a1;">'Goal 12: Responsible consumption and production'</span>
+    <span style="color: #a6e3a1;">'13'</span>: <span style="color: #a6e3a1;">'Goal 13: Climate action'</span>
+    <span style="color: #a6e3a1;">'14'</span>: <span style="color: #a6e3a1;">'Goal 14: Life below water'</span>
+    <span style="color: #a6e3a1;">'15'</span>: <span style="color: #a6e3a1;">'Goal 15: Life on land'</span>
+    <span style="color: #a6e3a1;">'16'</span>: <span style="color: #a6e3a1;">'Goal 16: Peace, justice and strong institutions'</span>
+    <span style="color: #a6e3a1;">'17'</span>: <span style="color: #a6e3a1;">'Goal 17: Partnerships for the goals'</span>
+  <span style="color: #cdd6f4;">default_value</span>: <span style="color: #a6e3a1;">''</span>
+</pre>
+</div>
+<ul class="org-ul">
+<li>Explanation: This plugin works if you can guarantee a one-to-one mapping of how data entries are written in the data source to how they are represented in the taxonomy. On the left-hand side of the colon put the way the entry is written in the data source, on the right side the way its written in the taxonomy. Right-hand side seems to ignore case, but make sure that the entries are written exactly matching to the taxonomy terms.</li>
+</ul>
+</div>
+</li>
+<li><a id="orgbe71250"></a><code>entity_lookup</code><br />
+<div class="outline-text-5" id="text-1-6-2-3">
+<ul class="org-ul">
+<li>Example</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-yaml"><span style="color: #cdd6f4;">field_type_of_information_manage</span>:
+  <span style="color: #cdd6f4;">plugin</span>: entity_lookup
+  <span style="color: #cdd6f4;">entity_type</span>: taxonomy_term
+  <span style="color: #cdd6f4;">ignore_case</span>: <span style="color: #fab387;">true</span>
+  <span style="color: #cdd6f4;">value_key</span>: name
+  <span style="color: #cdd6f4;">source</span>: constants/RECTYPE
+  <span style="color: #cdd6f4;">bundle</span>: source_entity_types
+</pre>
+</div>
+<ul class="org-ul">
+<li>Explanation: Fill in the corresponding term fromt he taxonomy found in the corresponding bundle. This needs to be an exact match, i.e. this step is done after <code>static_map</code> or using a pre-defined constant like in the example.</li>
+<li>to find the correct machine name for the bundle in question go to Web menu -&gt; About -&gt; Taxonomies -&gt; &lt;click on taxonomy&gt; -&gt; &lt;click on the taxonomy name/title again&gt;. You should find the Machine name next to the title</li>
+</ul>
+</div>
+</li>
+<li><a id="org3d8bd39"></a><br /></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-org13efa55" class="outline-2">
+<h2 id="org13efa55"><span class="section-number-2">2.</span> Error log: AI enhancement</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org49fcab3" class="outline-3">
-<h3 id="org49fcab3"><span class="section-number-3">2.1.</span> Data source not found in exception list</h3>
+<div id="outline-container-org2ce38bd" class="outline-3">
+<h3 id="org2ce38bd"><span class="section-number-3">2.1.</span> Data source not found in exception list</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><p>
@@ -422,8 +727,8 @@ Error:
 </ul>
 </div>
 </div>
-<div id="outline-container-org631f34f" class="outline-3">
-<h3 id="org631f34f"><span class="section-number-3">2.2.</span> Cannot access offset of type string on string</h3>
+<div id="outline-container-org9589a69" class="outline-3">
+<h3 id="org9589a69"><span class="section-number-3">2.2.</span> Cannot access offset of type string on string</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li><p>
@@ -435,20 +740,51 @@ Error:
 </div></li>
 <li>the same error is thrown on line 110
 <ul class="org-ul">
-<li>Explanation: Some boolean elements in the ECA (such as whether or not the field 'overwrite existing entries by AI' is checked in the data source settings) are apparently passed as strings through the ECA. The Boolean.php of the <code>ai_automators</code> plugin takes only arrays in line 94 and 110.</li>
+<li>Explanation: Some boolean elements in the ECA (such as whether or not the field 'overwrite existing entries by AI' is checked in the data source settings) are apparently passed as strings through the ECA. The Boolean.php of the <code>ai_automators</code> plugin (<code>web/modules/contrib/ai/modules/ai_automators/src/PluginBaseClasses/Boolean.php</code>)</li>
 </ul></li>
+</ul>
+<p>
+takes only arrays in line 94 and 110.
+</p>
+<ul class="org-ul">
 <li><p>
 Solution: As a hotfix I forced casting every value that is not an array to an array. That seems to work for now
 </p>
 <div class="org-src-container">
-<pre class="src src-nil">
+<pre class="src src-nil">92   public function verifyValue(ContentEntityInterface $entity, $value, FieldDefinitionInterface $fieldDefinit    ion, array $automatorConfig) {
+93     // Has to be string boolean.
+94     if (!is_array($value)) { #! changed
+95       $value = ['value' =&gt; $value];
+96     }
+97     if (!in_array($value['value'], ['TRUE', 'FALSE', '0', '1', 0, 1])) {
+98       return FALSE;
+99     }
+100     // Otherwise it is ok.
+101     return TRUE;
+102   }
+103 
+104   /**
+105    * {@inheritDoc}
+106    */
+107   public function storeValues(ContentEntityInterface $entity, array $values, FieldDefinitionInterface $field    Definition, array $automatorConfig) {
+108     // Transform string to boolean.
+109     foreach ($values as $key =&gt; $value) {
+110       if (!is_array($value)) { #! changed 
+111         $value = ['value' =&gt; $value];
+112       }
+113       $values[$key] = in_array($value['value'], ['TRUE', '1', 1]) ? TRUE : FALSE;
+114     }
+115     // Then set the value.
+116     $entity-&gt;set($fieldDefinition-&gt;getName(), $values);
+117     return TRUE;
+118   }
 </pre>
 </div></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbf6a46b" class="outline-3">
-<h3 id="orgbf6a46b"><span class="section-number-3">2.3.</span> OpenAI API doesn't handle strings</h3>
+<div id="outline-container-org273c89d" class="outline-3">
+<h3 id="org273c89d"><span class="section-number-3">2.3.</span> OpenAI API doesn't handle strings</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li><p>
@@ -458,7 +794,7 @@ Error:
 <pre class="src src-nil">TypeError: OpenAI\Responses\Chat\CreateResponse::from(): Argument #1 ($attributes) must be of type array, string given, called in /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/src/Resources/Chat.php on line 35 in OpenAI\Responses\Chat\CreateResponse::from() (line 46 of /home/stiprototype/public_html/stiportal_dev/vendor/openai-php/client/src/Responses/Chat/CreateResponse.php).
 </pre>
 </div></li>
-<li>Explanation: Like in <a href="#org631f34f">this error</a> the ECA that does the AI-enrichment seems to pass a string where an array is expected</li>
+<li>Explanation: Like in <a href="#org9589a69">this error</a> the ECA that does the AI-enrichment seems to pass a string where an array is expected</li>
 <li>Solution:
 <ul class="org-ul">
 <li>Changing the php code and forcing strings to array could work</li>
@@ -468,12 +804,12 @@ Error:
 </ul>
 </div>
 </div>
-<div id="outline-container-org0ed2765" class="outline-3">
-<h3 id="org0ed2765"><span class="section-number-3">2.4.</span> Examples of formatting errors when running a migration</h3>
+<div id="outline-container-org10a1a83" class="outline-3">
+<h3 id="org10a1a83"><span class="section-number-3">2.4.</span> Examples of formatting errors when running a migration</h3>
 <div class="outline-text-3" id="text-2-4">
 </div>
-<div id="outline-container-org05206e2" class="outline-4">
-<h4 id="org05206e2"><span class="section-number-4">2.4.1.</span> Whitespaces and different languages</h4>
+<div id="outline-container-org26541ca" class="outline-4">
+<h4 id="org26541ca"><span class="section-number-4">2.4.1.</span> Whitespaces and different languages</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <ul class="org-ul">
 <li><p>
@@ -496,16 +832,25 @@ Error:
 </div>
 </div>
 </div>
+<div id="outline-container-org5096d3f" class="outline-3">
+<h3 id="org5096d3f"><span class="section-number-3">2.5.</span> Gemini API changed</h3>
+<div class="outline-text-3" id="text-2-5">
+<ul class="org-ul">
+<li>this seems to be the case quite often</li>
+<li></li>
+</ul>
 </div>
-<div id="outline-container-orgbd2fd13" class="outline-2">
-<h2 id="orgbd2fd13"><span class="section-number-2">3.</span> How to change taxonomy terms&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></h2>
+</div>
+</div>
+<div id="outline-container-orgd7228a5" class="outline-2">
+<h2 id="orgd7228a5"><span class="section-number-2">3.</span> How to change taxonomy terms&#xa0;&#xa0;&#xa0;<span class="tag"><span class="drupal">drupal</span></span></h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Web menu -&gt; Structure -&gt; Taxonomy -&gt; &lt;AFS innovation use cases&gt;</li>
 </ul>
 </div>
-<div id="outline-container-orge409c4a" class="outline-3">
-<h3 id="orge409c4a"><span class="section-number-3">3.1.</span> Custom Taxonomy</h3>
+<div id="outline-container-orgb5dce1d" class="outline-3">
+<h3 id="orgb5dce1d"><span class="section-number-3">3.1.</span> Custom Taxonomy</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Structure -&gt; Taxonomy -&gt; Create vocabulary</li>
@@ -522,16 +867,12 @@ Error:
 </ol></li>
 </ul></li>
 </ul>
-
-<p>
-#+END<sub>EXPORT</sub>
-</p>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2025-10-07 Tue 11:41</p>
+<p class="date">Created: 2025-10-08 Wed 14:26</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
